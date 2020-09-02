@@ -1,21 +1,24 @@
 <?php
+session_start();
 require_once('dbconnect.php');
+
 function findUserByEmail($dbh, $email) {
-$sql = 'SELECT * FROM users WHERE email = ?';
-$stmt = $dbh->prepare($sql);
-$data[] = $email;
-$stmt->execute($data);
-return $stmt->fetch(PDO::FETCH_ASSOC);
+    $sql = 'SELECT * FROM users WHERE email = ?';
+    $stmt = $dbh->prepare($sql);
+    $data[] = $email;
+    $stmt->execute($data);
+    return $stmt->fetch(PDO::FETCH_ASSOC);
 }
 if (!empty($_POST)) {
-$user = findUserByEmail($dbh, $_POST["email"]);
-if (password_verify($_POST["password"], $user["password"])) {
-$_SESSION["login"] = true;
-$_SESSION["user"]  = $user;
-header('Location: ./mypage.php');
-exit;
-} else {
-$errors[] = 'メールアドレスまたはパスワードに誤りがあります。';
+    $user = findUserByEmail($dbh, $_POST["email"]);
+    if (password_verify($_POST["password"], $user["password"])) {
+        $_SESSION["login"] = true;
+        $_SESSION["user"]  = $user;
+        $id = $_SESSION["user"]["id"];
+        header('Location: ./mypage.php');
+        exit;
+    } else {
+        $errors[] = 'メールアドレスまたはパスワードに誤りがあります。';
 }
 }
 $errors = [];
@@ -44,7 +47,7 @@ $errors = [];
 
         <!-- ログインフォーム -->
         <div class="login">
-        <form action="./login.php" method="POST">
+        <form action="" method="POST">
         <div class="form-group">
                 <label for="email">メールアドレス</label>
                 <input type="email" name="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="メールアドレス" required>

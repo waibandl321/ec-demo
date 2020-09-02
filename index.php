@@ -12,7 +12,7 @@ $image_name = $_FILES['image']['name'];
 
 if(!empty($_POST)) {
     $stmt = $dbh->prepare("insert into users(name, email, password, address, user_image) values (?, ?, ?, ?, ?)");
-    $data = []; 
+    $data = [];
     $data[] = $userName;
     $data[] = $email;
     $data[] = password_hash($password, PASSWORD_DEFAULT);
@@ -67,6 +67,7 @@ if(!empty($_POST)) {
             </div>
             <input type="submit" name="register" id="saveBtn" class="btn btn-warning btn-lg btn-block mt-4" value="登録する">
         </form>
+        <p><a href="./login.php">すでに登録済みの方はこちら</a></p>
         <p><?php echo $login_link; ?></p>
         <p><?php echo $session_id; ?></p>
      </div>

@@ -2,15 +2,13 @@
 session_start();
 require_once('dbconnect.php');
 
-if(!$_SESSION["login"]) {
-    header('Location: login.php');
-    exit;
+$_SESSION = array();
+
+if(isset($_COOKIE["PHPSESSION"])) {
+    setcookie("PHPSESSION", '', time() - 1800, '/');
 }
-$user = $_SESSION["user"];
-$id = $_SESSION["user"]["id"];
-
+session_destroy();
 ?>
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -22,15 +20,13 @@ $id = $_SESSION["user"]["id"];
 </head>
 <body>
     <div class="container mypage">
-        <h2>マイページ</h2>
-        <a class="logout" href="./logout.php">ログアウトする</a>
-        <ul class="user-information">
-           <li><?php echo $id; ?></li>
-           <li><?php echo $user["name"]; ?></li>
-           <li><?php echo $user["email"]; ?></li>
-           <li><?php echo $user["address"]; ?></li>
-           <li><?php echo $user["user_image"]; ?></li>
+        <h2>ログアウトページ</h2>
+        <p>ログアウトしました</p>
+        <ul>
+            <li><a href="./index.php">登録画面へ</a></li>
+            <li><a href="./login.php">ログイン</a></li>
         </ul>
     </div>
+    <script src="./index.js"></script>
 </body>
 </html>
