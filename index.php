@@ -10,6 +10,7 @@ $password = $_POST['password'];
 $address = $_POST['address'];
 $image_name = $_FILES['image']['name'];
 
+
 if(!empty($_POST)) {
     $stmt = $dbh->prepare("insert into users(name, email, password, address, user_image) values (?, ?, ?, ?, ?)");
     $data = [];

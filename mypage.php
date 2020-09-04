@@ -8,6 +8,8 @@ if(!$_SESSION["login"]) {
 }
 $user = $_SESSION["user"];
 $id = $_SESSION["user"]["id"];
+$image = $_SESSION["user"]["user_image"];
+
 
 ?>
 
@@ -29,7 +31,7 @@ $id = $_SESSION["user"]["id"];
            <li><?php echo $user["name"]; ?></li>
            <li><?php echo $user["email"]; ?></li>
            <li><?php echo $user["address"]; ?></li>
-           <li><?php echo $user["user_image"]; ?></li>
+           <li><img src="./"><?php echo $image; ?></li>
         </ul>
     </div>
 </body>

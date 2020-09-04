@@ -8,6 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] != 'POST') {
 } else {
     // 画像を保存
     if (!empty($_FILES['image']['name'])) {
+        $_SESSION["image"]  = $img;
         $image_name = $_FILES['image']['name'];
         $image_type = $_FILES['image']['type'];
         $image_content = file_get_contents($_FILES['image']['tmp_name']);
@@ -40,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] != 'POST') {
     <div class="container user-registration">
         <h2>画像アップロードテスト</h2>
         <p class="text-primary font-weight-bold"><?php echo $db_success_message; ?></p>
-        <form action="./image_uploaded.php" class="form" method="POST" enctype="multipart/form-data">
+        <form action="./image_view.php" class="form" method="POST" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="image">画像</label>
                 <input type="file"" name="image" class="form-control" id="user-image" required>
