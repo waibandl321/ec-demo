@@ -1,15 +1,14 @@
 <?php
 session_start();
-require_once('dbconnect.php');
+require_once('../config/dbconnect.php');
 
 if(!$_SESSION["login"]) {
-    header('Location: login.php');
+    header('Location: ../users/login.php');
     exit;
 }
 $user = $_SESSION["user"];
 $id = $_SESSION["user"]["id"];
 $image = $_SESSION["user"]["user_image"];
-
 
 ?>
 
@@ -20,18 +19,18 @@ $image = $_SESSION["user"]["user_image"];
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>マイページ</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body>
     <div class="container mypage">
         <h2>マイページ</h2>
-        <a class="logout" href="./logout.php">ログアウトする</a>
+        <a class="logout" href="../users/logout.php">ログアウトする</a>
         <ul class="user-information">
            <li><?php echo $id; ?></li>
            <li><?php echo $user["name"]; ?></li>
            <li><?php echo $user["email"]; ?></li>
            <li><?php echo $user["address"]; ?></li>
-           <li><img src="./"><?php echo $image; ?></li>
+           <li><img src="./images/<?php echo $image; ?>"></li>
         </ul>
     </div>
 </body>

@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once('dbconnect.php');
+require_once('../config/dbconnect.php');
 
 function findUserByEmail($dbh, $email) {
     $sql = 'SELECT * FROM users WHERE email = ?';
@@ -9,13 +9,13 @@ function findUserByEmail($dbh, $email) {
     $stmt->execute($data);
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
-if (!empty($_POST)) {
-    $user = findUserByEmail($dbh, $_POST["email"]);
-    if (password_verify($_POST["password"], $user["password"])) {
-        $_SESSION["login"] = true;
-        $_SESSION["user"]  = $user;
+if (!empty($_POST)) { //dataの存在チェック
+    $user = findUserByEmail($dbh, $_POST["email"]); //findUserByEmail関数でemailを検索情報にしてusersテーブルから情報を取得
+    if (password_verify($_POST["password"], $user["password"])) { //password_verify関数でpasswordの検証 暗号化されたパスワードとuserが入力されたpassを比較
+        $_SESSION["login"] = true; //passwordの比較結果がtrue
+        $_SESSION["user"]  = $user; //user情報
         $id = $_SESSION["user"]["id"];
-        header('Location: ./mypage.php');
+        header('Location: ../users/mypage.php');
         exit;
     } else {
         $errors[] = 'メールアドレスまたはパスワードに誤りがあります。';
@@ -30,7 +30,7 @@ $errors = [];
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ログインページ</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body>
     <div class="container">

@@ -1,0 +1,57 @@
+.page__title {
+    font-family: "游ゴシック体", YuGothic, "游ゴシック", "Yu Gothic", "メイリオ", "Hiragino Kaku Gothic ProN", "Hiragino Sans", sans-serif;
+}
+.user-registration,
+.mypage,
+.item-registration,
+.item-image-registration {
+    font-family: "游ゴシック体", YuGothic, "游ゴシック", "Yu Gothic", "メイリオ", "Hiragino Kaku Gothic ProN", "Hiragino Sans", sans-serif;
+    max-width: 800px;
+    width: 100%;
+}
+.user-registration,
+.mypage,
+.item-registration {
+    margin: 80px auto;
+}
+.item-image-registration {
+    margin-top: 50px;
+}
+.page-links {
+    margin-top: 30px;
+    width: 100%;
+}
+
+/* ドラッグアンドドロップ部分のスタイル */
+.form-control-file {
+    color: blue;
+    font-size: 16px;
+    height: 100px;
+    line-height: 100px;
+    border: 3px solid #ddd;
+    box-sizing: border-box;
+    border-radius: 5px;
+    transition: .3s;
+}
+.form-control-file:hover {
+    cursor: pointer;
+    box-shadow: 0 0 5px #ddd;
+    transition: .3s;
+}
+.enter {
+    border: 3px solid skyblue;
+}
+input[type="file"] {
+    padding: 0 10px;
+    width: auto;
+    outline: 0;
+}
+input[type="file"]:hover {
+    cursor: pointer;
+}
+input[type="file"]::-webkit-file-upload-button {
+    background: -webkit-gradient(linear, left top, left bottom, from(transparent), to(transparent));
+    background-color: transparent;
+    border: 0;
+    margin: 0 20px 0 0;
+  }
