@@ -85,6 +85,24 @@ header {
 .header-bottom__notice {
     margin-left: auto;
 }
+@media(max-width: 768px) {
+    .header-top__search-bar {
+        width: 40%;
+    }
+    .header-bottom__service-links {
+        padding-left: 30px;
+    }
+    .header-top__menu-icon {
+        width: unset;
+    }
+}
+@media(max-width: 768px) {
+    .header-bottom,
+    .header-top__search-bar,
+    .header-top__account-information {
+        display: none;
+    }
+}
 
 /* フッター */
 footer {

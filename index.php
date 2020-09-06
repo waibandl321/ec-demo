@@ -10,7 +10,11 @@
     
 </head>
 <body>
+    <?php include("../component/header.php"); ?>
     <h1>トップページです</h1>
+    <?php include("../component/footer.php"); ?>
+    
+
     <script src="../assets/js/index.js"></script>
 </body>
 </html>
