@@ -1,3 +1,118 @@
+a:hover {
+    text-decoration: none;
+}
+/* 共通のコンポーネント */
+/* ヘッダー */
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+}
+.header-top {
+    background-color: #131921;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #fff;
+    padding: 10px 20px;
+}
+.header-top__menu-icon {
+    width: 35px;
+}
+.header-top__menu-icon i {
+    font-size: 35px;
+    box-sizing: border-box;
+    padding: 5px;
+    border: 1px solid #777;
+}
+.header-top__logo {
+    width: 150px;
+}
+.header-top__logo img {
+    width: 100%;
+}
+.header-top__search-bar {
+    width: 75%;
+}
+.header-top__form-group {
+    display: flex;
+    margin-bottom: 0;
+}
+.header-top__account-information a {
+    color: #fff;
+}
+.header-top__cart-link {
+    text-align: right;
+}
+.header-top__cart-link i {
+    font-size: 35px;
+}
+/* ヘッダーの下側 */
+.header-bottom {
+    background-color: #232f3e;
+    color: #fff;
+    padding: 5px 20px;
+}
+.header-bottom,
+.header-bottom__delivery-location,
+.header-bottom__service-links {
+    display: flex;
+    align-items: center;
+}
+.delivery-location__text {
+    font-size: 12px;
+    padding-left: 10px;
+}
+.header-bottom__service-links {
+    padding-left: 150px;
+    margin-bottom: 0;
+}
+.header-bottom__service-link + .header-bottom__service-link {
+    padding-left: 20px;
+}
+.header-bottom__service-link a,
+.header-bottom__notice a,
+.header-top__account-information a,
+.header-top__cart-link {
+    color: #fff;
+    font-size: 14px;
+}
+.header-bottom__service-link {
+    list-style: none;
+}
+.header-bottom__notice {
+    margin-left: auto;
+}
+
+/* フッター */
+footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+}
+.footer-top {
+    height: 60px;
+    line-height: 60px;
+    background-color: #232f3e;
+    text-align: center;
+}
+.back-top-top__link {
+    display: block;
+    font-size: 14px;
+    color: #fff;
+}
+.back-top-top__link:hover {
+    color: #fff;
+    opacity: .6;
+    text-decoration: none;
+}
+
+.container {
+}
 .page__title {
     font-family: "游ゴシック体", YuGothic, "游ゴシック", "Yu Gothic", "メイリオ", "Hiragino Kaku Gothic ProN", "Hiragino Sans", sans-serif;
 }
@@ -9,13 +124,46 @@
     max-width: 800px;
     width: 100%;
 }
-.user-registration,
-.mypage,
-.item-registration {
-    margin: 80px auto;
+
+/* 商品一覧 */
+.item-list {
+    padding-left: 0;
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 -15px 60px;
+    box-sizing: border-box;
+    overflow: hidden;
 }
-.item-image-registration {
-    margin-top: 50px;
+.item-detail {
+    padding: 30px 15px;
+    list-style: none;
+    width: calc(100% / 4);
+    border-bottom: 2px solid #ddd;
+}
+@media(max-width: 1050px) {
+    .item-detail {
+        width: calc(100% / 3);
+    }
+}
+@media(max-width: 768px) {
+    .item-detail {
+        width: calc(100% / 2);
+    }
+}
+.item-detail__image {
+    width: 100%;
+}
+.item-detail__name {
+    margin-top: 15px;
+}
+.item-detail__name,
+.item-detail__description,
+.item-detail__stock, 
+.item-detail__price {
+    font-size: 14px;
+}
+.item-detail__price__number {
+    font-size: 18px;
 }
 .page-links {
     margin-top: 30px;
@@ -55,3 +203,51 @@ input[type="file"]::-webkit-file-upload-button {
     border: 0;
     margin: 0 20px 0 0;
   }
+  textarea {
+    resize: vertical;
+    min-height: 500px;
+    font-family: Consolas, 'Courier New', Courier, Monaco, monospace;
+  }
+
+  /* 商品詳細ページのスタイル */
+.item-detail__wrap {
+      display: flex;
+      flex-wrap: wrap;
+      margin: 30px -50px 0;
+      padding-bottom: 50px;
+      position: relative;
+}
+.item-detail__images,
+.item-detail__block {
+    width: 50%;
+    box-sizing: border-box;
+    padding: 0 50px;
+}
+.item-detail__block {
+    position: relative;
+    z-index: 1;
+}
+.back-to__item-list {
+    float: right;
+    padding: 5px 10px;
+    background-color: #EC920A;
+    color: #000;
+}
+.item-detail a {
+    padding: 7px 15px;
+    background-color: #EC920A;
+    color: #000;
+}
+.back-to__item-list:hover {
+    opacity: .8;
+    color: #000;
+}
+@media(max-width: 768px) {
+    .item-detail__wrap {
+        margin: 30px 0 0;
+    }
+    .item-detail__images,
+    .item-detail__block {
+        width: 100%;
+    }
+}
