@@ -158,6 +158,13 @@ footer {
     width: calc(100% / 4);
     border-bottom: 2px solid #ddd;
 }
+.about-user {
+    float: right;
+    display: flex;
+}
+.about-user__item + .about-user__item {
+    margin-left: 20px;
+}
 @media(max-width: 1050px) {
     .item-detail {
         width: calc(100% / 3);
@@ -259,6 +266,28 @@ input[type="file"]::-webkit-file-upload-button {
 .back-to__item-list:hover {
     opacity: .8;
     color: #000;
+}
+.cart-in__wrap {
+    display: flex;
+    margin-top: 20px;
+}
+.cart-in__bottom {
+    border: none;
+    outline: none;
+    background-color: orange;
+    color: #fff;
+    padding: 10px;
+}
+.back-to-item-list {
+    margin-left: 20px;
+}
+.back-to-item-list___link {
+    display: block;
+    padding: 0 20px;
+    color: #000;
+    background:lightblue;
+    height: 44px;
+    line-height: 44px;
 }
 @media(max-width: 768px) {
     .item-detail__wrap {

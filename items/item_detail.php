@@ -2,12 +2,33 @@
 session_start();
 require_once('../config/dbconnect.php');
 
+//セッションで保持したuserデータ
+$user = $_SESSION["user"];
+$user_id = $_SESSION["user"]["id"];
+
+$quantity = $_POST["quantity"];
+$item_id = $_POST["item_id"];
+
+//パラメーターに付与された商品ID(code)を取得して、紐つく商品データを取得
 if(isset($_GET['code'])) {
     $code = $_GET['code'];
     $sql = "SELECT * FROM items WHERE item_id = $code";
     $stmt = $dbh->prepare($sql);
     $stmt->execute();
     $item_info = $stmt->fetchAll();
+}
+
+//cartテーブルへのinsert
+if(isset($_POST['cart_in'])) {
+    $stmt = $dbh->prepare("insert into cart(user_id, item_id, quantity) values (?, ?, ?)");
+    $data = [];
+    $data[] = $user_id;
+    $data[] = $item_id;
+    $data[] = $quantity;
+    $stmt->execute($data);
+    $cart_in_message = 'カートへの追加に成功しました!';
+} else {
+    $cart_in_message = 'カートへの追加に失敗しました!';
 }
 
 ?>
@@ -40,10 +61,10 @@ if(isset($_GET['code'])) {
                 <div class="item-detail__block">
                     <!-- 商品詳細 -->
                     <p class="item-detail__block__id">
-                        <?php echo $item["item_id"]; ?>
+                        商品id : <?php echo $item["item_id"]; ?>
                     </p>
                     <p class="item-detail__block__name">
-                        <?php echo $item["item_name"]; ?>
+                        商品名 : <?php echo $item["item_name"]; ?>
                     </p>
                     <p class="item-detail__block__price">
                         価格 : <?php echo $item["item_price"]; ?>
@@ -57,6 +78,26 @@ if(isset($_GET['code'])) {
                     <p class="item-detail__block__created-at">
                         出品日時 : <?php echo $item["created_at"]; ?>
                     </p>
+                    <form action="" method="POST">
+                        <div>
+                            個数を選択
+                            <select name="quantity">
+                            <?php for($i=1; $i<=20; $i++){
+                                echo "<option value=".$i.">".$i."</option>";
+                            }?>
+                            </select>
+                        </div>
+                        <div class="cart-in__wrap">
+                            <div>
+                                <input type="submit" name="cart_in" value="カートに入れる" class="cart-in__bottom">
+                                <input type="hidden" value="<?=$item["item_id"]?>" name="item_id">
+                            </div>
+                            <div class="back-to-item-list">
+                                <a href="../items/item_list.php" class="back-to-item-list___link">戻る</a>
+                            </div>
+                        </div>
+                    </form>
+                    <p class="text-primary"><?php echo $cart_in_message; ?></p>
                 </div>
             </div>
         </div>

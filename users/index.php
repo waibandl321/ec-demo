@@ -80,7 +80,6 @@ if(!empty($_POST)) {
         </form>
         <div class="page-links alert alert-secondary">
             <p><a href="../users/login.php" class="font-weight-bold">すでに登録済みの方はこちら</a></p>
-            <p><a href="../items/index.php" class="font-weight-bold">商品を登録する</a></p>
         </div>
         <p><?php echo $login_link; ?></p>
         <p><?php echo $session_id; ?></p>

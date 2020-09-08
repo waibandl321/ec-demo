@@ -44,13 +44,14 @@ for($i = 0; $i < count($_FILES["upload_image"]["name"]); $i++ ){
             <form action="../test/images_uploaded.php" method="POST" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="images">画像1</label>
-                <input type="file" class="form-control form-control-file" name="upload_image[]" multiple>
+                <input type="file" class="form-control form-control-file" name="upload_image[]" multiple required>
             </div>
             <div class="form-group">
                 <label for="images">画像2</label>
                 <input type="file" class="form-control form-control-file" name="upload_image[]" multiple>
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
+            <p class="text-primary"><?php echo $message; ?></p>
             </form>
         </div>
     </main>

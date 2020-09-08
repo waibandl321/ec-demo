@@ -29,7 +29,7 @@ $signout_message = 'サインアウト';
             </form>
         </div>
         <div class="header-top__account-information">
-            <a href="">アカウント情報</a>
+            <a href="../users/mypage.php">アカウント情報</a>
         </div>
         <div class="header-top__cart-link">
             <i class="fas fa-cart-plus"></i>カート

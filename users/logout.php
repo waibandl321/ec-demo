@@ -4,6 +4,7 @@ require_once('../config/dbconnect.php');
 
 $_SESSION = array();
 
+
 if(isset($_COOKIE["PHPSESSION"])) {
     setcookie("PHPSESSION", '', time() - 1800, '/');
 }
@@ -29,6 +30,7 @@ session_destroy();
             <li><a href="./login.php">ログイン</a></li>
         </ul>
     </div>
+    <?php include("../component/footer.php"); ?>
     <script src="./index.js"></script>
 </body>
 </html>

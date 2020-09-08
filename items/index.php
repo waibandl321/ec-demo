@@ -2,6 +2,14 @@
 session_start();
 require_once('../config/dbconnect.php');
 
+if(!$_SESSION["login"]) {
+    header('Location: ../users/login.php');
+    exit;
+}
+
+$user = $_SESSION["user"];
+$id = $_SESSION["user"]["id"];
+
 $errors = [];
 
 // 商品情報の取得
@@ -50,6 +58,7 @@ if(!empty($_POST)) {
 <?php include("../component/header.php"); ?>
     <div class="container">
         <div class="item-registration">
+            <div class="login-user">現在ログイン中のユーザー : <?php echo $id; ?></div>
             <h2>商品登録ページ</h2>
             <p class="text-primary"><?php echo $db_success_message; ?></p>
             <form method="POST" action="../items/index.php" enctype="multipart/form-data">

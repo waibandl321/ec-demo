@@ -1,12 +1,21 @@
 <?php
 session_start();
-
 require_once('../config/dbconnect.php');
 
 $sql = "SELECT * FROM items";
 $stmt = $dbh->prepare($sql);
 $stmt->execute();
 $items = $stmt->fetchAll();
+
+$user = $_SESSION["user"];
+$id = $_SESSION["user"]["id"];
+
+// ログインしていない場合は、ログインリンクを表示する
+if(!$_SESSION["login"]) {
+    $message = "ログインする";
+} else {
+    $message = "ログアウトする";
+}
 
 
 ?>
@@ -23,8 +32,14 @@ $items = $stmt->fetchAll();
 <?php include("../component/header.php"); ?>
     <div class="container">
         <div class="item-list__wrap">
+        <div class="about-user">
+            <p class="about-user__item">現在ログイン中のユーザー : <?php echo $id; ?></p>
+            <p class="about-user__item"><a href="../users/cart.php">カートへ</a></p>
+            <p class="about-user__item"><a href="../users/logout.php"><?php echo $message; ?></a></p>
+        </div>
         <h2>商品一覧</h2>
          <p class="text-primary font-weight-bold"><?php echo $db_success_message; ?></p>
+         
             <ul class="item-list">
                 <?php for($i = 0; $i < count($items); $i++) {
                 ;?>
@@ -35,7 +50,7 @@ $items = $stmt->fetchAll();
                     <p class="item-detail__description">商品説明文 : <?php echo $items[$i]["item_description"]; ?></p>
                     <p class="item-detail__price">価格 : <span class="item-detail__price__number text-danger"><?php echo $items[$i]["item_price"]; ?></span></p>
                     <p class="item-detail__stock">在庫数 : <?php echo $items[$i]["item_stock"]; ?></p>
-                    <a href="../items/item_detail.php?code=<?php echo $items[$i]["item_id"]; ?>">商品リンクへ</a>
+                    <a href="../items/item_detail.php?code=<?php echo $items[$i]["item_id"]; ?>">詳細を見る</a>
                 </li>
                 <?php }; ?>
             </ul>

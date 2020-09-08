@@ -10,10 +10,14 @@
     
 </head>
 <body>
-    <?php include("../component/header.php"); ?>
-    <h1>トップページです</h1>
-    <?php include("../component/footer.php"); ?>
     
+    <h1>トップページです</h1>
+    <ul>
+        <li><a href="../users/index.php">ユーザー登録</a></li>
+        <li><a href="../users/login.php">ログイン</a></li>
+        <li><a href="../items/index.php">商品登録</a></li>
+        <li><a href="../items/item_list.php">商品一覧</a></li>
+    </ul>
 
     <script src="../assets/js/index.js"></script>
 </body>

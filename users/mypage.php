@@ -25,6 +25,7 @@ $image = $_SESSION["user"]["user_image"];
 <body>
 <?php include("../component/header.php"); ?>
     <div class="container mypage">
+        <div class="login-user">現在ログイン中のユーザーid : <?php echo $id; ?></div>
         <h2>マイページ</h2>
         <a class="logout" href="../users/logout.php">ログアウトする</a>
         <ul class="user-information">
