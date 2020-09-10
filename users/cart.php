@@ -17,7 +17,15 @@ if(!$user) {
     $stmt->execute();
     $cart_items = $stmt->fetchAll();
 }
-
+for($i = 0; $i < count($cart_items); $i++) {
+    $data = $cart_items[$i]["item_id"];
+    $sql = "SELECT * FROM items WHERE item_id = $data";
+    $stmt = $dbh->prepare($sql);
+    $stmt->execute();
+    $item = $stmt->fetchAll();
+    var_dump($item);
+    var_dump($item["item_name"]);
+}
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -39,22 +47,9 @@ if(!$user) {
         <div class="cart__wrap">
             <h2>カート詳細</h2>
             <div class="cart__items__wrap">
-                <?php for($i = 0; $i < count($cart_items); $i++) {
-                    $data = $cart_items[$i]["item_id"]; ?>
-                    <div class="cart__items__inner">
-                    <?php
-                        $sql = "SELECT * FROM items WHERE item_id = $data";
-                        $stmt = $dbh->prepare($sql);
-                        $stmt->execute();
-                        $item = $stmt->fetchAll();
-                        var_dump($item);
-                        var_dump($item["item_name"]);
-                    ?>
-                    </div>
-                <?php }; ?>
+
             </div>
         </div>
-        
     </div>
     <?php include("../component/footer.php"); ?>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>

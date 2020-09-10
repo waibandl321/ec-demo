@@ -4,6 +4,7 @@ a:hover {
 /* 共通のコンポーネント */
 /* ヘッダー */
 header {
+    display: none;
     position: fixed;
     top: 0;
     left: 0;
