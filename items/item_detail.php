@@ -9,6 +9,12 @@ $user_id = $_SESSION["user"]["id"];
 $quantity = $_POST["quantity"];
 $item_id = $_POST["item_id"];
 
+//select
+
+//データがなければinsert
+
+//データがあればupdate
+
 //パラメーターに付与された商品ID(code)を取得して、紐つく商品データを取得
 if(isset($_GET['code'])) {
     $code = $_GET['code'];
@@ -91,6 +97,8 @@ if(isset($_POST['cart_in'])) {
                             <div>
                                 <input type="submit" name="cart_in" value="カートに入れる" class="cart-in__bottom">
                                 <input type="hidden" value="<?=$item["item_id"]?>" name="item_id">
+                                <!-- count -->
+                                <input type="hidden" name="count_updated_method" value="add">
                             </div>
                             <div class="back-to-item-list">
                                 <a href="../items/item_list.php" class="back-to-item-list___link">戻る</a>

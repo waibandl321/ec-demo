@@ -17,14 +17,13 @@ if(!$user) {
     $stmt->execute();
     $cart_items = $stmt->fetchAll();
 }
+$items = [];
 for($i = 0; $i < count($cart_items); $i++) {
     $data = $cart_items[$i]["item_id"];
     $sql = "SELECT * FROM items WHERE item_id = $data";
     $stmt = $dbh->prepare($sql);
     $stmt->execute();
-    $item = $stmt->fetchAll();
-    var_dump($item);
-    var_dump($item["item_name"]);
+    $items[] = $stmt->fetch();
 }
 ?>
 <!DOCTYPE html>
@@ -47,7 +46,9 @@ for($i = 0; $i < count($cart_items); $i++) {
         <div class="cart__wrap">
             <h2>カート詳細</h2>
             <div class="cart__items__wrap">
-
+                <?php foreach($items as $item) : ?>
+                    <div><?php echo $item["item_name"]; ?></div>
+                <?php endforeach;?>
             </div>
         </div>
     </div>
