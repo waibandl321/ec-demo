@@ -19,22 +19,24 @@ if(!$user) {
 }
 //カートに追加された個数を取得
 foreach($cart_items as $cart_item) {
-
+    //数量を取得
+    var_dump($cart_item["quantity"]);
 }
 
 //カートに表示されるアイテムを個別に取得
 $items = [];
 for($i = 0; $i < count($cart_items); $i++) {
     $data = $cart_items[$i]["item_id"];
-    $sql = "SELECT * FROM items WHERE item_id = $data";
+    $sql = "SELECT * FROM items JOIN cart WHERE items.item_id = $data AND cart.item_id = $data AND cart.user_id = $user_id";
     $stmt = $dbh->prepare($sql);
     $stmt->execute();
-    $items[] = $stmt->fetch(); //対象の値(item_id)が単数形の場合はfetch() 複数形の場合はfetchAll() 単数形の処理の時にfetchAll()を使うと正常に取得ができない
+    $items[] = $stmt->fetch();
+    //対象の値(item_id)が単数形の場合はfetch() 複数形の場合はfetchAll() 単数形の処理の時にfetchAll()を使うと正常に取得ができない
 }
 
 //合計金額の計算
 foreach($items as $item) {
-    $a = floor($item["item_price"] * 1.10); //floorで小数点切り捨て
+    $a = floor($item["item_price"] * $item["quantity"] * 1.10); //floorで小数点切り捨て
     $sum += $a;
 }
 
@@ -67,11 +69,11 @@ foreach($items as $item) {
                             <img src="../items/images/<?php echo $item["item_thumbnail"]; ?>" alt="商品画像">
                         </div>
                         <div class="cart-item__infomation">
+                            <p class="sum-price__individual">合計 : <?php echo floor($item["item_price"] * 1.10) * $item["quantity"]; ?>円(税込)</p>
                             <p>商品ID : <?php echo $item["item_id"]; ?></p>
                             <p><a href="../items/item_detail.php?code=<?php echo $item["item_id"]; ?>"><?php echo $item["item_name"]; ?></a></p>
-                            <p>価格 : <?php echo floor($item["item_price"] * 1.10); ?></p>
-                            <p>数量 : 
-                            </p>
+                            <p>単品価格 : <?php echo floor($item["item_price"] * 1.10); ?></p>
+                            <p>数量 : <?php echo $item["quantity"]; ?></p>
                             <p>商品説明 : <?php echo $item["item_description"]; ?></p>
                         </div>
                     </div>

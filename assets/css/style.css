@@ -385,3 +385,8 @@ input[type="file"]::-webkit-file-upload-button {
     padding: 5px;
     text-align: center;
 }
+.sum-price__individual {
+    float: right;
+    font-weight: bold;
+    font-size: 16px;
+}
