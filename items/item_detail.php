@@ -6,7 +6,6 @@ require_once('../config/dbconnect.php');
 $user = $_SESSION["user"];
 $user_id = $_SESSION["user"]["id"];
 
-//個数
 $quantity = $_POST["quantity"];
 $item_id = $_POST["item_id"];
 
@@ -28,36 +27,33 @@ if(isset($_GET['code'])) {
     }
 }
 
-//cartテーブルへのinsert
-if(isset($_POST['cart_in'])) {
-    //もし同じ商品がカート内に存在する場合の処理
-    if($cart_quantity){
-        //cartテーブルの更新
-        $same_item_message = "同じアイテムがカート内に存在しています";
-        //合計の数量を算出
-        $sum_quantity = [];
-        $sum_quantity[] = intval($quantity);
-        $sum_quantity[] = $cart_quantity;
-        $fix_sum_quantity = array_sum($sum_quantity);
-        //データベースの更新
-        $cart_sql = "UPDATE cart SET quantity = $fix_sum_quantity WHERE item_id = $id";
-        $cart_stmt = $dbh->prepare($sql);
-        $cart_stmt->execute();
-    } else {
-        //同じ商品がカートに存在しない場合の処理
-        $stmt = $dbh->prepare("INSERT INTO cart(user_id, item_id, quantity) VALUES (?, ?, ?)");
-        $data = [];
-        $data[] = $user_id;
-        $data[] = $item_id;
-        $data[] = $quantity;
-        $stmt->execute($data);
-    }
-
-} else {
-    $cart_in_message = '商品をカートに追加してください';
+//もし同じ商品がカート内に存在する場合の処理
+if(isset($_POST["count_updated_method"])) {
+    //cartテーブルの更新
+    $same_item_message = "同じアイテムがカート内に存在しています";
+    //データベースの更新
+    $cart_sql = "UPDATE cart SET quantity = $fix_sum_quantity WHERE item_id = $id";
+    $cart_stmt = $dbh->prepare($sql);
+    //合計の数量を算出
+    $sum_quantity = [];
+    $sum_quantity[] = intval($quantity);
+    $sum_quantity[] = $cart_quantity;
+    $fix_sum_quantity = array_sum($sum_quantity);
+    $cart_stmt->execute();
 }
 
-
+//cartテーブルへのinsert
+if(isset($_POST['cart_in'])) {
+    //同じ商品がカートに存在しない場合の処理
+    $stmt = $dbh->prepare("INSERT INTO cart(user_id, item_id, quantity) VALUES (?, ?, ?)");
+    $data = [];
+    $data[] = $user_id;
+    $data[] = $item_id;
+    $data[] = $quantity;
+    $stmt->execute($data);
+    } else {
+    $cart_in_message = '商品をカートに追加してください';
+}
 
 ?>
 <!DOCTYPE html>
@@ -122,10 +118,12 @@ if(isset($_POST['cart_in'])) {
                         </div>
                         <div class="cart-in__wrap">
                             <div>
+                            <?php if(!$cart_quantity) : ?>
                                 <input type="submit" name="cart_in" value="カートに入れる" class="cart-in__bottom">
                                 <input type="hidden" value="<?=$item["item_id"]?>" name="item_id">
-                                <!-- count -->
-                                <input type="hidden" name="count_updated_method" value="add">
+                            <?php else : ?>
+                                <input type="submit" name="count_updated_method" value="カートに入れる" class="cart-in__bottom">
+                            <?php endif; ?>
                             </div>
                             <div class="back-to-item-list">
                                 <a href="../items/item_list.php" class="back-to-item-list___link">戻る</a>
@@ -137,7 +135,7 @@ if(isset($_POST['cart_in'])) {
             </div>
         </div>
         <?php endforeach; ?>
-        <?php var_dump($fix_sum_quantity); ?>
+        <?php var_dump($sum_quantity); ?>
     </div>
     <?php include("../component/footer.php"); ?>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
