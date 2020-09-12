@@ -23,37 +23,33 @@ if(isset($_GET['code'])) {
         $sql = "SELECT quantity FROM cart WHERE item_id = $id";
         $stmt = $dbh->prepare($sql);
         $stmt->execute();
-        $cart_quantity = intval($stmt->fetch());
+        $cart_quantity = $stmt->fetch()["quantity"];
     }
 }
 
 //もし同じ商品がカート内に存在する場合の処理
-if(isset($_POST["count_updated_method"])) {
-    //cartテーブルの更新
+if(isset($cart_quantity)) {
     $same_item_message = "同じアイテムがカート内に存在しています";
-    //データベースの更新
-    $cart_sql = "UPDATE cart SET quantity = $fix_sum_quantity WHERE item_id = $id";
-    $cart_stmt = $dbh->prepare($sql);
-    //合計の数量を算出
-    $sum_quantity = [];
-    $sum_quantity[] = intval($quantity);
-    $sum_quantity[] = $cart_quantity;
-    $fix_sum_quantity = array_sum($sum_quantity);
-    $cart_stmt->execute();
-}
-
-//cartテーブルへのinsert
-if(isset($_POST['cart_in'])) {
-    //同じ商品がカートに存在しない場合の処理
-    $stmt = $dbh->prepare("INSERT INTO cart(user_id, item_id, quantity) VALUES (?, ?, ?)");
-    $data = [];
-    $data[] = $user_id;
-    $data[] = $item_id;
-    $data[] = $quantity;
-    $stmt->execute($data);
-    } else {
+    if($_POST["count_updated_method"]){
+        $add_quantity = $_POST["update_quantity"];
+        $sum_quantity = $cart_quantity + $add_quantity;
+        $sql = "UPDATE cart SET quantity = $sum_quantity WHERE item_id = $id";
+        $stmt = $dbh->prepare($sql);
+        $stmt->execute();
+    }
+} elseif(isset($_POST["cart_in"])) {
+     //同じ商品がカートに存在しない場合の処理 cartテーブルへのinsert
+     $stmt = $dbh->prepare("INSERT INTO cart(user_id, item_id, quantity) VALUES (?, ?, ?)");
+     $data = [];
+     $data[] = $user_id;
+     $data[] = $item_id;
+     $data[] = $quantity;
+     $stmt->execute($data);
+} else {
     $cart_in_message = '商品をカートに追加してください';
 }
+
+
 
 ?>
 <!DOCTYPE html>
@@ -110,11 +106,19 @@ if(isset($_POST['cart_in'])) {
                     <form action="" method="POST">
                         <div>
                             個数を選択
+                            <?php if(!$cart_quantity) : ?>
                             <select name="quantity">
-                            <?php for($i=1; $i<=20; $i++){
-                                echo "<option value=".$i.">".$i."</option>";
-                            }?>
+                                <?php for($i=1; $i<=20; $i++){
+                                    echo "<option value=".$i.">".$i."</option>";
+                                }?>
                             </select>
+                            <?php else : ?>
+                            <select name="update_quantity">
+                                <?php for($i=1; $i<=20; $i++){
+                                    echo "<option value=".$i.">".$i."</option>";
+                                }?>
+                            </select>
+                            <?php endif; ?>
                         </div>
                         <div class="cart-in__wrap">
                             <div>
@@ -135,6 +139,8 @@ if(isset($_POST['cart_in'])) {
             </div>
         </div>
         <?php endforeach; ?>
+        <?php var_dump($cart_quantity); ?>
+        <?php var_dump($add_quantity); ?>
         <?php var_dump($sum_quantity); ?>
     </div>
     <?php include("../component/footer.php"); ?>
