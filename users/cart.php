@@ -27,6 +27,7 @@ foreach($cart_items as $cart_item) {
 $items = [];
 for($i = 0; $i < count($cart_items); $i++) {
     $data = $cart_items[$i]["item_id"];
+    //テーブル結合と複数条件の指定により、items.item_id cart.item_id cart.user_idに合致するデータを取得
     $sql = "SELECT * FROM items JOIN cart WHERE items.item_id = $data AND cart.item_id = $data AND cart.user_id = $user_id";
     $stmt = $dbh->prepare($sql);
     $stmt->execute();
@@ -69,7 +70,8 @@ foreach($items as $item) {
                             <img src="../items/images/<?php echo $item["item_thumbnail"]; ?>" alt="商品画像">
                         </div>
                         <div class="cart-item__infomation">
-                            <p class="sum-price__individual">合計 : <?php echo floor($item["item_price"] * 1.10) * $item["quantity"]; ?>円(税込)</p>
+                            <!-- 小計 = 商品価格(税込) * 数量 -->
+                            <p class="sum-price__individual">小計 : <?php echo floor($item["item_price"] * 1.10) * $item["quantity"]; ?>円(税込)</p>
                             <p>商品ID : <?php echo $item["item_id"]; ?></p>
                             <p><a href="../items/item_detail.php?code=<?php echo $item["item_id"]; ?>"><?php echo $item["item_name"]; ?></a></p>
                             <p>単品価格 : <?php echo floor($item["item_price"] * 1.10); ?></p>
@@ -78,12 +80,12 @@ foreach($items as $item) {
                         </div>
                     </div>
                 <?php endforeach;?>
-                <div class="cart-item__sum">合計金額 : <?php echo $sum; ?>円(税込)</div>
+                <div class="cart-item__sum">お支払い合計金額 : <?php echo $sum; ?>円(税込)</div>
             </div>
           </div>
           <aside class="checkout-link">
             <div class="total__price">
-             <p class="cart-item__sum__aside">合計金額 : <?php echo $sum; ?>円(税込)</p>
+             <p class="cart-item__sum__aside">お支払い合計金額 : <?php echo $sum; ?>円(税込)</p>
             </div>
             <div class="to-checkout-page">
                 <a href="">決済画面へ</a>
