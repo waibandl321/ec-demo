@@ -9,9 +9,11 @@ $user_id = $_SESSION["user"]["id"];
 $quantity = $_POST["quantity"];
 $item_id = $_POST["item_id"];
 
-//パラメーターに付与された商品ID(code)を取得して、紐つく商品データを取得
+//パラメーターに付与された商品ID(code)を取得して、紐つく商品データを取得して商品詳細情報のブロックに表示させる
 if(isset($_GET['code'])) {
+    //パラメータの値を取得
     $code = $_GET['code'];
+    //紐付く商品データの取得
     $sql = "SELECT * FROM items WHERE item_id = $code";
     $stmt = $dbh->prepare($sql);
     $stmt->execute();
@@ -20,24 +22,28 @@ if(isset($_GET['code'])) {
     //カートから商品IDに紐づく商品の数量を取得
     foreach($item_info as $item) {
         $id = $item["item_id"];
-        $sql = "SELECT quantity FROM cart WHERE item_id = $id";
+        //商品idとユーザーidを条件に指定して、cartテーブルから数量(quantity)を取得
+        $sql = "SELECT quantity FROM cart WHERE item_id = $id AND user_id = $user_id";
         $stmt = $dbh->prepare($sql);
         $stmt->execute();
+        //数量の取得
         $cart_quantity = $stmt->fetch()["quantity"];
     }
 }
 
-//もし同じ商品がカート内に存在する場合の処理
+//同じ商品がカート内に存在する場合の処理
 if(isset($cart_quantity)) {
     $same_item_message = "同じアイテムがカート内に存在しています";
     if($_POST["count_updated_method"]){
         $add_quantity = $_POST["update_quantity"];
         $sum_quantity = $cart_quantity + $add_quantity;
-        $sql = "UPDATE cart SET quantity = $sum_quantity WHERE item_id = $id";
+        $sql = "UPDATE cart SET quantity = $sum_quantity WHERE item_id = $id AND user_id = $user_id";
         $stmt = $dbh->prepare($sql);
         $stmt->execute();
     }
 } elseif(isset($_POST["cart_in"])) {
+    //insertされたことを確認するための<input type="hidden" name="finish_insert">からPOSTされたデータを取得
+    $finish_insert = $_POST["finish_insert"];
      //同じ商品がカートに存在しない場合の処理 cartテーブルへのinsert
      $stmt = $dbh->prepare("INSERT INTO cart(user_id, item_id, quantity) VALUES (?, ?, ?)");
      $data = [];
@@ -45,11 +51,12 @@ if(isset($cart_quantity)) {
      $data[] = $item_id;
      $data[] = $quantity;
      $stmt->execute($data);
+     //insertが完了したら処理を終了するためにheader関数で同じページに飛ばして、cartテーブルから商品情報の取得が完了した状態にする
+     header("Location: ../items/item_detail.php?code={$item_id}");
 } else {
+    //cartに紐付く商品がなく、cartテーブルにinsertもされていない状態の処理
     $cart_in_message = '商品をカートに追加してください';
 }
-
-
 
 ?>
 <!DOCTYPE html>
@@ -106,28 +113,40 @@ if(isset($cart_quantity)) {
                     <form action="" method="POST">
                         <div>
                             個数を選択
+                            <!-- ▼▼▼▼▼▼　商品詳細ページで表示しているアイテムがカートに存在 or 存在しない場合にselectボックスの表示を切り替える ▼▼▼▼▼▼-->
                             <?php if(!$cart_quantity) : ?>
+                            <!-- もしカート内に同じアイテムが存在しない場合に表示するselectボックス-->
                             <select name="quantity">
                                 <?php for($i=1; $i<=20; $i++){
                                     echo "<option value=".$i.">".$i."</option>";
                                 }?>
                             </select>
                             <?php else : ?>
+                            <!-- もしカート内に同じアイテムが存在する場合に表示するselectボックス-->
+                            <!-- name="update_quantity"で値の上書きのためのデータを取得 -->
                             <select name="update_quantity">
                                 <?php for($i=1; $i<=20; $i++){
                                     echo "<option value=".$i.">".$i."</option>";
                                 }?>
                             </select>
                             <?php endif; ?>
+                            <!--　▲▲▲▲▲▲　条件分岐ここまで ▲▲▲▲▲▲　-->
                         </div>
                         <div class="cart-in__wrap">
                             <div>
+                            <!-- ▼▼▼▼▼▼　「カートに追加」の表示ボタンを切り替え流ための条件分岐 ▼▼▼▼▼▼　-->
                             <?php if(!$cart_quantity) : ?>
+                                <!-- もしカート内に商品がない場合に表示させるボタン -->
                                 <input type="submit" name="cart_in" value="カートに入れる" class="cart-in__bottom">
+                                <!-- 商品のinsertが終わったことを表現する<input type="hidden"> -->
+                                <input type="hidden" name="finish_insert">
+                                <!-- insertされる商品のitem_idをpostする -->
                                 <input type="hidden" value="<?=$item["item_id"]?>" name="item_id">
                             <?php else : ?>
+                                <!-- もしカート内に商品がある場合に表示させるボタン（値の上書き用） -->
                                 <input type="submit" name="count_updated_method" value="カートに入れる" class="cart-in__bottom">
                             <?php endif; ?>
+                            <!--　▲▲▲▲▲▲　条件分岐ここまで ▲▲▲▲▲▲　-->
                             </div>
                             <div class="back-to-item-list">
                                 <a href="../items/item_list.php" class="back-to-item-list___link">戻る</a>
@@ -135,6 +154,8 @@ if(isset($cart_quantity)) {
                         </div>
                     </form>
                     <p class="text-primary"><?php echo $cart_in_message; ?></p>
+                    <p class="text-primary"><?php echo $finish_insert_message; ?></p>
+                    <p class="text-primary"><?php echo $select_message; ?></p>
                 </div>
             </div>
         </div>
