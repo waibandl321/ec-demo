@@ -6,14 +6,9 @@ require_once('../config/dbconnect.php');
 $user = $_SESSION["user"];
 $user_id = $_SESSION["user"]["id"];
 
+//個数
 $quantity = $_POST["quantity"];
 $item_id = $_POST["item_id"];
-
-//select
-
-//データがなければinsert
-
-//データがあればupdate
 
 //パラメーターに付与された商品ID(code)を取得して、紐つく商品データを取得
 if(isset($_GET['code'])) {
@@ -22,20 +17,47 @@ if(isset($_GET['code'])) {
     $stmt = $dbh->prepare($sql);
     $stmt->execute();
     $item_info = $stmt->fetchAll();
+
+    //カートから商品IDに紐づく商品の数量を取得
+    foreach($item_info as $item) {
+        $id = $item["item_id"];
+        $sql = "SELECT quantity FROM cart WHERE item_id = $id";
+        $stmt = $dbh->prepare($sql);
+        $stmt->execute();
+        $cart_quantity = intval($stmt->fetch());
+    }
 }
 
 //cartテーブルへのinsert
 if(isset($_POST['cart_in'])) {
-    $stmt = $dbh->prepare("insert into cart(user_id, item_id, quantity) values (?, ?, ?)");
-    $data = [];
-    $data[] = $user_id;
-    $data[] = $item_id;
-    $data[] = $quantity;
-    $stmt->execute($data);
-    $cart_in_message = 'カートへの追加に成功しました!';
+    //もし同じ商品がカート内に存在する場合の処理
+    if($cart_quantity){
+        //cartテーブルの更新
+        $same_item_message = "同じアイテムがカート内に存在しています";
+        //合計の数量を算出
+        $sum_quantity = [];
+        $sum_quantity[] = intval($quantity);
+        $sum_quantity[] = $cart_quantity;
+        $fix_sum_quantity = array_sum($sum_quantity);
+        //データベースの更新
+        $cart_sql = "UPDATE cart SET quantity = $fix_sum_quantity WHERE item_id = $id";
+        $cart_stmt = $dbh->prepare($sql);
+        $cart_stmt->execute();
+    } else {
+        //同じ商品がカートに存在しない場合の処理
+        $stmt = $dbh->prepare("INSERT INTO cart(user_id, item_id, quantity) VALUES (?, ?, ?)");
+        $data = [];
+        $data[] = $user_id;
+        $data[] = $item_id;
+        $data[] = $quantity;
+        $stmt->execute($data);
+    }
+
 } else {
-    $cart_in_message = 'カートへの追加に失敗しました!';
+    $cart_in_message = '商品をカートに追加してください';
 }
+
+
 
 ?>
 <!DOCTYPE html>
@@ -52,8 +74,13 @@ if(isset($_POST['cart_in'])) {
     <div class="container">
         <div class="item-page">
             <h2>商品ページ</h2>
-            <a href="../items/item_list.php" class="back-to__item-list">商品一覧へ戻る</a>
+            <div class="item-detail__links">
+                <a href="../users/cart.php" class="to__cart-page">カートへ</a>
+                <a href="../items/item_list.php" class="back-to__item-list">商品一覧へ戻る</a>
+            </div>
             <p class="text-primary font-weight-bold"><?php echo $db_success_message; ?></p>
+            <p class="text-primary font-weight-bold"><?php echo $message; ?></p>
+            <p class="text-primary font-weight-bold"><?php echo $same_item_message; ?></p>
             <?php foreach($item_info as $item) : ?>
             <div class="item-detail__wrap">
                 <div class="item-detail__images">
@@ -110,7 +137,7 @@ if(isset($_POST['cart_in'])) {
             </div>
         </div>
         <?php endforeach; ?>
-        <?php var_dump($item_info); ?>
+        <?php var_dump($fix_sum_quantity); ?>
     </div>
     <?php include("../component/footer.php"); ?>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
