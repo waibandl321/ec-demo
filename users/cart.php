@@ -28,7 +28,7 @@ $items = [];
 for($i = 0; $i < count($cart_items); $i++) {
     $data = $cart_items[$i]["item_id"];
     //テーブル結合と複数条件の指定により、items.item_id cart.item_id cart.user_idに合致するデータを取得
-    $sql = "SELECT * FROM items JOIN cart WHERE items.item_id = $data AND cart.item_id = $data AND cart.user_id = $user_id";
+    $sql = "SELECT * FROM items JOIN cart ON items.item_id = $data AND cart.item_id = $data AND cart.user_id = $user_id";
     $stmt = $dbh->prepare($sql);
     $stmt->execute();
     $items[] = $stmt->fetch();
@@ -39,6 +39,7 @@ for($i = 0; $i < count($cart_items); $i++) {
 foreach($items as $item) {
     $a = floor($item["item_price"] * $item["quantity"] * 1.10); //floorで小数点切り捨て
     $sum += $a;
+    $_SESSION["items"] = $items;
 }
 
 
@@ -64,7 +65,7 @@ foreach($items as $item) {
          <div class="cart-items">
             <h2>SHOPPING CART</h2>
             <div class="cart-items__inner">
-                <?php foreach($items as $item) : ?>
+                <?php foreach($_SESSION["items"] as $item) : ?>
                     <div class="cart-item">
                         <div class="cart-item__image">
                             <img src="../items/images/<?php echo $item["item_thumbnail"]; ?>" alt="商品画像">
