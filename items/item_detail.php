@@ -66,6 +66,7 @@ if(isset($cart_quantity)) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>商品詳細</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="../assets/css/drift/drift-basic.css">
     <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body>
@@ -83,11 +84,12 @@ if(isset($cart_quantity)) {
             <?php foreach($item_info as $item) : ?>
             <div class="item-detail__wrap">
                 <div class="item-detail__images">
-                    <div class="item-detail__images__main">
-                        <img src="../items/images/<?php echo $item["item_thumbnail"]; ?>" alt="商品のサムネイル画像">
+                    <div class="item-detail__images__main zoom__lens__container">
+                        <img src="../items/images/<?php echo $item["item_thumbnail"]; ?>" alt="商品のサムネイル画像" class="zoom__item">
+                        <div class="zoom_lens"></div>
                     </div>
-                    <div class="item-detail__images__sub">
-
+                    <div class="zoom__area">
+                        <img src="">
                     </div>
                 </div>
                 <div class="item-detail__block">
@@ -113,7 +115,7 @@ if(isset($cart_quantity)) {
                     <form action="" method="POST">
                         <div>
                             個数を選択
-                            <!-- ▼▼▼▼▼▼　商品詳細ページで表示しているアイテムがカートに存在 or 存在しない場合にselectボックスの表示を切り替える ▼▼▼▼▼▼-->
+                            <!-- 　商品詳細ページで表示しているアイテムがカートに存在 or 存在しない場合にselectボックスの表示を切り替える -->
                             <?php if(!$cart_quantity) : ?>
                             <!-- もしカート内に同じアイテムが存在しない場合に表示するselectボックス-->
                             <select name="quantity">
@@ -130,11 +132,11 @@ if(isset($cart_quantity)) {
                                 }?>
                             </select>
                             <?php endif; ?>
-                            <!--　▲▲▲▲▲▲　条件分岐ここまで ▲▲▲▲▲▲　-->
+                            <!--　　条件分岐ここまで 　-->
                         </div>
                         <div class="cart-in__wrap">
                             <div>
-                            <!-- ▼▼▼▼▼▼　「カートに追加」の表示ボタンを切り替え流ための条件分岐 ▼▼▼▼▼▼　-->
+                            <!-- 　「カートに追加」の表示ボタンを切り替え流ための条件分岐 　-->
                             <?php if(!$cart_quantity) : ?>
                                 <!-- もしカート内に商品がない場合に表示させるボタン -->
                                 <input type="submit" name="cart_in" value="カートに入れる" class="cart-in__bottom">
@@ -146,7 +148,7 @@ if(isset($cart_quantity)) {
                                 <!-- もしカート内に商品がある場合に表示させるボタン（値の上書き用） -->
                                 <input type="submit" name="count_updated_method" value="カートに入れる" class="cart-in__bottom">
                             <?php endif; ?>
-                            <!--　▲▲▲▲▲▲　条件分岐ここまで ▲▲▲▲▲▲　-->
+                            <!--　　条件分岐ここまで 　-->
                             </div>
                             <div class="back-to-item-list">
                                 <a href="../items/item_list.php" class="back-to-item-list___link">戻る</a>
@@ -167,6 +169,8 @@ if(isset($cart_quantity)) {
     <?php include("../component/footer.php"); ?>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.matchHeight/0.7.2/jquery.matchHeight-min.js" integrity="sha512-/bOVV1DV1AQXcypckRwsR9ThoCj7FqTV2/0Bm79bL3YSyLkVideFLE3MIZkq1u5t28ke1c0n31WYCOrO01dsUg==" crossorigin="anonymous"></script>
+    <!-- <script src="../assets/js/elevatezoom-master/jquery.elevatezoom.js"></script> -->
+    <!-- <script src="../assets/js/drift/Drift.min.js"></script> -->
     <script src="../assets/js/index.js"></script>
 </body>
 </html>

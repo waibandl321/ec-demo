@@ -56,7 +56,7 @@ foreach($items as $item) {
 <body>
 <?php include("../component/header.php"); ?>
     <div class="container">
-        <div class="about-user">
+        <div class="about-user clearfix">
             <p class="about-user__item">現在ログイン中のユーザー : <?php echo $user_id; ?></p>
             <p class="about-user__item"><a href="../items/item_list.php">商品一覧へ戻る</a></p>
             <p class="about-user__item"><a href="../users/logout.php"><?php echo $message; ?></a></p>

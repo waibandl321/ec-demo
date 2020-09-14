@@ -1,6 +1,11 @@
 a:hover {
     text-decoration: none;
 }
+.clearfix {
+    display: block;
+    clear: both;
+    content: "";
+}
 /* 共通のコンポーネント */
 /* ヘッダー */
 header {
@@ -255,9 +260,46 @@ input[type="file"]::-webkit-file-upload-button {
     box-sizing: border-box;
     padding: 0 50px;
 }
-.item-detail__block {
+.item-detail__images {
     position: relative;
-    z-index: 1;
+}
+.item-detail__images__main {
+    position: relative;
+    overflow: hidden;
+}
+.item-detail__images__main img {
+    
+}
+.zoom_lens {
+    display: none;
+    position: absolute;
+    top: 10px;
+    background: lightblue;
+    left: 20px;
+    z-index: 2;
+    cursor: crosshair;
+    opacity: .3;
+    height: 170px;
+    width: 170px;
+}
+.zoom_lens.active {
+    display: block;
+}
+.item-detail__images img {
+    width: 100%;
+}
+.zoom__area {
+    position: absolute;
+    top: 0;
+    right: -500px;
+    height: 550px;
+    width: 500px;
+    overflow: hidden;
+    z-index: 2;
+    display: none;
+}
+.zoom__area.active {
+    display: block;
 }
 .item-detail__links {
     float: right;
