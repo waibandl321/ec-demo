@@ -34,6 +34,9 @@ if(!$_SESSION["login"]) {
         <div class="item-list__wrap">
         <div class="about-user">
             <p class="about-user__item">現在ログイン中のユーザー : <?php echo $id; ?></p>
+            <?php if($user): ?>
+                <a href="../items/index.php" class="to__register-page">商品登録へ</a>
+            <?php endif; ?>
             <p class="about-user__item"><a href="../users/cart.php">カートへ</a></p>
             <p class="about-user__item"><a href="../users/logout.php"><?php echo $message; ?></a></p>
         </div>

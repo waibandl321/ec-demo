@@ -1,11 +1,15 @@
+body {
+    font-family: "游ゴシック体", YuGothic, "游ゴシック", "Yu Gothic", "メイリオ", "Hiragino Kaku Gothic ProN", "Hiragino Sans", sans-serif;
+}
 a:hover {
     text-decoration: none;
 }
-.clearfix {
+.clearfix::after {
     display: block;
     clear: both;
     content: "";
 }
+
 /* 共通のコンポーネント */
 /* ヘッダー */
 header {
@@ -135,20 +139,27 @@ footer {
     text-decoration: none;
 }
 
-.container {
-}
-.page__title {
-    font-family: "游ゴシック体", YuGothic, "游ゴシック", "Yu Gothic", "メイリオ", "Hiragino Kaku Gothic ProN", "Hiragino Sans", sans-serif;
-}
 .user-registration,
-.mypage,
-.item-registration,
 .item-image-registration {
-    font-family: "游ゴシック体", YuGothic, "游ゴシック", "Yu Gothic", "メイリオ", "Hiragino Kaku Gothic ProN", "Hiragino Sans", sans-serif;
     max-width: 800px;
     width: 100%;
 }
-
+.item-registration__outer {
+    max-width: 1200px;
+    display: flex;
+    box-sizing: border-box;
+    margin: 0 -20px;
+}
+.item-registration {
+    padding: 0 20px;
+    box-sizing: border-box;
+    width: 70%;
+}
+.add-image {
+    padding: 0 20px;
+    box-sizing: border-box;
+    width: 30%;
+}
 /* 商品一覧 */
 .item-list {
     padding-left: 0;
@@ -303,6 +314,7 @@ input[type="file"]::-webkit-file-upload-button {
 }
 .item-detail__links {
     float: right;
+    display: flex;
 }
 .to__cart-page {
     padding: 5px 10px;
@@ -351,6 +363,22 @@ input[type="file"]::-webkit-file-upload-button {
     background:lightblue;
     height: 44px;
     line-height: 44px;
+}
+.other-image__items {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    margin: 20px -10px 0;
+    padding-left: 0;
+}
+.other-image__item {
+    width: calc(100% / 5);
+    box-sizing: border-box;
+    padding: 0 10px;
+    list-style: none;
+}
+.other-image__item img {
+    width: 100%
 }
 @media(max-width: 768px) {
     .item-detail__wrap {
@@ -431,4 +459,29 @@ input[type="file"]::-webkit-file-upload-button {
     float: right;
     font-weight: bold;
     font-size: 16px;
+}
+.to__register-page {
+    padding: 5px 10px;
+    background: #f0c14b;
+    border-color: #a88734 #9c7e31 #846a29;
+    color: #111;
+    margin: 0 20px;
+}
+
+/* マイページ */
+.registered-items__wrap {
+    margin-top: 50px;
+}
+.registered-items {
+    box-sizing: border-box;
+    margin: 0 -20px;
+    display: flex;
+    flex-wrap: wrap;
+}
+.registered-item {
+    margin-top: 20px;
+    list-style: none;
+    box-sizing: border-box;
+    padding: 0 20px;
+    width: calc(100% / 5);
 }

@@ -23,11 +23,19 @@ if(isset($_GET['code'])) {
     foreach($item_info as $item) {
         $id = $item["item_id"];
         //商品idとユーザーidを条件に指定して、cartテーブルから数量(quantity)を取得
-        $sql = "SELECT quantity FROM cart WHERE item_id = $id AND user_id = $user_id";
+        $sql = "SELECT * FROM cart WHERE item_id = $id AND user_id = $user_id";
         $stmt = $dbh->prepare($sql);
         $stmt->execute();
         //数量の取得
         $cart_quantity = $stmt->fetch()["quantity"];
+    }
+    //商品IDに紐づく追加で登録された複数の商品画像を取得する処理
+    foreach($item_info as $item) {
+        $id = $item["item_id"];
+        $sql = "SELECT * FROM item_images WHERE item_id = $id";
+        $stmt = $dbh->prepare($sql);
+        $stmt->execute();
+        $item_images = $stmt->fetchAll();
     }
 }
 
@@ -57,7 +65,6 @@ if(isset($cart_quantity)) {
     //cartに紐付く商品がなく、cartテーブルにinsertもされていない状態の処理
     $cart_in_message = '商品をカートに追加してください';
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -75,6 +82,9 @@ if(isset($cart_quantity)) {
         <div class="item-page">
             <h2>商品ページ</h2>
             <div class="item-detail__links">
+                <?php if($user): ?>
+                <a href="../items/index.php" class="to__register-page">商品登録へ</a>
+                <?php endif; ?>
                 <a href="../users/cart.php" class="to__cart-page">カートへ</a>
                 <a href="../items/item_list.php" class="back-to__item-list">商品一覧へ戻る</a>
             </div>
@@ -88,6 +98,14 @@ if(isset($cart_quantity)) {
                         <img src="../items/images/<?php echo $item["item_thumbnail"]; ?>" alt="商品のサムネイル画像" class="zoom__item">
                         <div class="zoom_lens"></div>
                     </div>
+                    <ul class="other-image__items">
+                    <!-- その他の画像の取得 -->
+                    <?php for($i = 0; $i < count($item_images); $i++) : ?>
+                        <li class="other-image__item">
+                            <img src="../items/images/<?php echo $item_images[$i]["image_name"]; ?>" alt="他の商品画像が入ります">
+                        </li>
+                    <?php endfor; ?>
+                    </ul>
                     <div class="zoom__area">
                         <img src="">
                     </div>
@@ -136,7 +154,7 @@ if(isset($cart_quantity)) {
                         </div>
                         <div class="cart-in__wrap">
                             <div>
-                            <!-- 　「カートに追加」の表示ボタンを切り替え流ための条件分岐 　-->
+                            <!-- 　「カートに追加」の表示ボタンを切り替えるための条件分岐 　-->
                             <?php if(!$cart_quantity) : ?>
                                 <!-- もしカート内に商品がない場合に表示させるボタン -->
                                 <input type="submit" name="cart_in" value="カートに入れる" class="cart-in__bottom">
@@ -162,9 +180,6 @@ if(isset($cart_quantity)) {
             </div>
         </div>
         <?php endforeach; ?>
-        <?php var_dump($cart_quantity); ?>
-        <?php var_dump($add_quantity); ?>
-        <?php var_dump($sum_quantity); ?>
     </div>
     <?php include("../component/footer.php"); ?>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
