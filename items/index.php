@@ -31,8 +31,10 @@ $item_id = $_GET['code'];
 //パラメーターに値が存在する場合は更新処理
 if(isset($_GET['code'])) {
     //item_idに紐付く商品データの取得
-    $sql = "SELECT * FROM items WHERE item_id = $item_id"; 
+    $sql = "SELECT * FROM items WHERE item_id = :item_id";
     $stmt = $dbh->prepare($sql);
+    //指定された変数名にパラメータをバインドする
+    $stmt->bindParam(':item_id', $item_id, PDO::PARAM_INT);
     $stmt->execute();
     $edit_item = $stmt->fetch();
 }
@@ -48,12 +50,13 @@ $edit_stock = $_POST["edit_stock"];
 if(isset($_GET['code'])) {
     //更新ボタンが押されたときの処理
     if(isset($_POST["edit"])) {
-        $sql = "UPDATE items SET item_name = ?, item_price = ?, item_description = ?, item_stock = ? WHERE item_id = $item_id";
+        $sql = "UPDATE items SET item_name = ?, item_price = ?, item_description = ?, item_stock = ? WHERE item_id = ?";
         $data = [];
         $data[] = $edit_name;
         $data[] = $edit_price;
         $data[] = $edit_description;
         $data[] = $edit_stock;
+        $data[] = $item_id;
         $stmt = $dbh->prepare($sql);
         $stmt->execute($data);
         $message = "商品情報の更新に成功しました";
@@ -73,7 +76,7 @@ if(isset($_GET['code'])) {
         $_SESSION["data"] = $data;
         $stmt->execute($data);
         $message = "商品情報の登録に成功しました！";
-        header('Location: ../items/index.php');
+        // header('Location: ../items/index.php');
     } else {
         $message = "商品を登録してください！";
     }
@@ -108,7 +111,7 @@ if(!empty($_FILES['item_thumbnail']['name'])) {
             <h2>商品登録ページ</h2>
             <p class="text-primary"><?php echo $db_success_message; ?></p>
             <p class="text-danger"><?php echo $message; ?></p>
-            <!-- 新規登録フォーム -->
+            <!-- 新規登録フォーム パラメーターにcodeが付与されていない場合 -->
             <?php if(!isset($_GET["code"])) : ?>
             <form method="POST" action="" enctype="multipart/form-data">
                 <div class="form-group">
@@ -134,7 +137,7 @@ if(!empty($_FILES['item_thumbnail']['name'])) {
                 <input type="submit" class="btn btn-primary" name="submit" value="保存する">
                 </form>
                 <?php else : ?>
-                <!-- 更新フォーム -->
+                <!-- 更新フォーム 商品情報を編集するボタンが押されてパラメータが付与されている場合に時に実行-->
                 <form method="POST" action="" enctype="multipart/form-data">
                     <div class="form-group">
                         <label for="item-name">商品名</label>
@@ -159,7 +162,7 @@ if(!empty($_FILES['item_thumbnail']['name'])) {
         </div>
         <!-- 商品画像追加 -->
         <?php if(isset($submit)) : ?>
-        <a href="../items/images_uploaded.php">追加で画像を登録する</a>
+        <a href="../items/images_uploaded.php">商品画像を追加する</a>
         <?php endif; ?>
     </div>
         </div>

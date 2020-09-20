@@ -11,8 +11,10 @@ if(!$_SESSION["login"]) {
     exit;
 } else {
     //ユーザーが登録した商品を取得する処理 seller_id(ユーザーid)に紐付くデータを取得
-    $sql = "SELECT * FROM items WHERE seller_id = $id";
+    $sql = "SELECT * FROM items WHERE seller_id = :seller_id";
     $stmt = $dbh->prepare($sql);
+    //指定された変数名にパラメータをバインドする
+    $stmt->bindParam(':seller_id', $id, PDO::PARAM_INT);
     $stmt->execute();
     //数量の取得
     $items = $stmt->fetchAll();

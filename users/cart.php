@@ -12,8 +12,10 @@ if(!$user) {
 } else {
     //ログインユーザーに紐づく商品情報をCartテーブルから取得
     $message = "ログアウト";
-    $sql = "SELECT * FROM cart WHERE user_id = $user_id";
+    $sql = "SELECT * FROM cart WHERE user_id = :user_id";
     $stmt = $dbh->prepare($sql);
+    //指定された変数名にパラメータをバインドする
+    $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
     $stmt->execute();
     $cart_items = $stmt->fetchAll();
 }
@@ -28,8 +30,12 @@ $items = [];
 for($i = 0; $i < count($cart_items); $i++) {
     $data = $cart_items[$i]["item_id"];
     //テーブル結合と複数条件の指定により、items.item_id cart.item_id cart.user_idに合致するデータを取得
-    $sql = "SELECT * FROM items JOIN cart ON items.item_id = $data AND cart.item_id = $data AND cart.user_id = $user_id";
+    // $sql = "SELECT * FROM items JOIN cart ON items.item_id = $data AND cart.item_id = $data AND cart.user_id = $user_id";
+    $sql = "SELECT * FROM items JOIN cart ON items.item_id = :data AND cart.item_id = :data AND cart.user_id = :user_id";
     $stmt = $dbh->prepare($sql);
+    //指定された変数名にパラメータをバインドする
+    $stmt->bindParam(':data', $data, PDO::PARAM_INT);
+    $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
     $stmt->execute();
     $items[] = $stmt->fetch();
     //対象の値(item_id)が単数形の場合はfetch() 複数形の場合はfetchAll() 単数形の処理の時にfetchAll()を使うと正常に取得ができない

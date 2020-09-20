@@ -9,13 +9,15 @@ $user_id = $_SESSION["user"]["id"];
 $quantity = $_POST["quantity"];
 $item_id = $_POST["item_id"];
 
-//パラメーターに付与された商品ID(code)を取得して、紐つく商品データを取得して商品詳細情報のブロックに表示させる
+//パラメーターに付与された商品ID(code)を取得 =>商品ID(code)に紐つく商品データを取得し、商品詳細情報のブロックに表示させる
 if(isset($_GET['code'])) {
     //パラメータの値を取得
     $code = $_GET['code'];
     //紐付く商品データの取得
-    $sql = "SELECT * FROM items WHERE item_id = $code";
+    $sql = "SELECT * FROM items WHERE item_id = :code";
     $stmt = $dbh->prepare($sql);
+    //指定された変数名にパラメータをバインドする
+    $stmt->bindParam(':code', $code, PDO::PARAM_INT);
     $stmt->execute();
     $item_info = $stmt->fetchAll();
 
@@ -23,8 +25,11 @@ if(isset($_GET['code'])) {
     foreach($item_info as $item) {
         $id = $item["item_id"];
         //商品idとユーザーidを条件に指定して、cartテーブルから数量(quantity)を取得
-        $sql = "SELECT * FROM cart WHERE item_id = $id AND user_id = $user_id";
+        $sql = "SELECT * FROM cart WHERE item_id = :item_id AND user_id = :user_id";
         $stmt = $dbh->prepare($sql);
+        //指定された変数名にパラメータをバインドする
+        $stmt->bindParam(':item_id', $id, PDO::PARAM_INT);
+        $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
         $stmt->execute();
         //数量の取得
         $cart_quantity = $stmt->fetch()["quantity"];
@@ -32,8 +37,10 @@ if(isset($_GET['code'])) {
     //商品IDに紐づく追加で登録された複数の商品画像を取得する処理
     foreach($item_info as $item) {
         $id = $item["item_id"];
-        $sql = "SELECT * FROM item_images WHERE item_id = $id";
+        $sql = "SELECT * FROM item_images WHERE item_id = :item_id";
         $stmt = $dbh->prepare($sql);
+        //指定された変数名にパラメータをバインドする
+        $stmt->bindParam(':item_id', $id, PDO::PARAM_INT);
         $stmt->execute();
         $item_images = $stmt->fetchAll();
     }
@@ -45,8 +52,12 @@ if(isset($cart_quantity)) {
     if($_POST["count_updated_method"]){
         $add_quantity = $_POST["update_quantity"];
         $sum_quantity = $cart_quantity + $add_quantity;
-        $sql = "UPDATE cart SET quantity = $sum_quantity WHERE item_id = $id AND user_id = $user_id";
+        $sql = "UPDATE cart SET quantity = :sum_quantity WHERE item_id = :item_id AND user_id = :user_id";
         $stmt = $dbh->prepare($sql);
+        //指定された変数名にパラメータをバインドする
+        $stmt->bindParam(':sum_quantity', $sum_quantity, PDO::PARAM_INT);
+        $stmt->bindParam(':item_id', $id, PDO::PARAM_INT);
+        $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
         $stmt->execute();
     }
 } elseif(isset($_POST["cart_in"])) {
