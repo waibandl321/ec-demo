@@ -18,11 +18,12 @@ $item_name = $_POST['item_name'];
 $item_price = $_POST['item_price'];
 $item_description = $_POST['item_description'];
 $item_stock = $_POST['item_stock'];
-//セッションに情報保持
-$_SESSION["item_name"] = $item_name;
-$_SESSION["item_price"] = $item_price;
-$_SESSION["item_description"] = $item_description;
-$_SESSION["item_stock"] = $item_stock;
+
+//セッションに情報保持　=> 必要ない処理のためコメントアウト
+// $_SESSION["item_name"] = $item_name;
+// $_SESSION["item_price"] = $item_price;
+// $_SESSION["item_description"] = $item_description;
+// $_SESSION["item_stock"] = $item_stock;
 
 // 画像の取得
 $item_thumbnail = $_FILES['item_thumbnail']['name'];
