@@ -12,6 +12,7 @@ function h($str){
     return htmlspecialchars($str, ENT_QUOTES, 'UTF-8');
 }
 
+//ログインユーザー以外はログインページにリダイレクト
 if(!$_SESSION["login"]) {
     header('Location: ../users/login.php');
     exit;
@@ -40,39 +41,46 @@ if(!$_SESSION["login"]) {
 </head>
 <body>
 <?php include("../component/header.php"); ?>
+<main>
     <div class="container mypage">
         <div>
-            <div class="login-user">現在ログイン中のユーザーid : <?php echo h($id); ?></div>
-            <h2>マイページ</h2>
-            <a class="logout" href="../users/logout.php">ログアウトする</a>
-            <ul class="user-information">
-            <li><?php echo h($id); ?></li>
-            <li><?php echo h($user["name"]); ?></li>
-            <li><?php echo h($user["email"]); ?></li>
-            <li><?php echo h($user["address"]); ?></li>
-            <li><img src="./images/<?php echo h($image); ?>"></li>
-            </ul>
-            <a href="../items/index.php">商品登録する</a>
-            <a href="../items/item_list.php">商品一覧ページへ</a>
+            <!-- <div class="login-user">現在ログイン中のユーザーid : <?php echo h($id); ?></div> -->
+            <h2>ユーザー情報</h2>
+            <div class="user-information__wrap">
+                <div class="user-information__image">
+                    <img src="./images/<?php echo h($image); ?>">
+                </div>
+                <ul class="user-information__list">
+                    <li>ユーザーID : <?php echo h($id); ?></li>
+                    <li>ユーザー名 : <?php echo h($user["name"]); ?></li>
+                    <li>メールアドレス : <?php echo h($user["email"]); ?></li>
+                    <li>登録住所 : <?php echo h($user["address"]); ?></li>
+                    <li><a href="../items/index.php" class="registered-item__link">商品登録する</a></li>
+                </ul>
+            </div>
+            
         </div>
+        <hr class="hr upper__registered-items">
         <div class="registered-items__wrap">
             <h3>出品した商品一覧</h3>
             <ul class="registered-items">
                 <?php for($i = 0; $i < count($items); $i++) : ?>
-                <li class="registered-item">
-                    <img src="../items/images/<?php echo h($items[$i]["item_thumbnail"]); ?>" alt="商品画像" class="item-detail__image">
-                    <p class="registered-item__id"><?php echo h($items[$i]["item_id"]); ?></p>
+                <li class="registered-item js-registered-item">
+                    <div class="trimming">
+                        <img src="../items/images/<?php echo h($items[$i]["item_thumbnail"]); ?>" alt="商品画像" class="item-detail__image">
+                    </div>
+                    <p class="registered-item__id">商品ID : <?php echo h($items[$i]["item_id"]); ?></p>
                     <p class="registered-item__name">商品名 : <?php echo h($items[$i]["item_name"]); ?></p>
                     <p class="registered-item__description">商品説明文 : <?php echo h($items[$i]["item_description"]); ?></p>
                     <p class="registered-item__price">価格 : <span class="price__number text-danger"><?php echo h($items[$i]["item_price"]); ?></span></p>
                     <p class="registered-item__stock">在庫数 : <?php echo h($items[$i]["item_stock"]); ?></p>
-                    <a href="../items/index.php?code=<?php echo h($items[$i]["item_id"]); ?>">商品情報を編集する</a>
+                    <a href="../items/index.php?code=<?php echo h($items[$i]["item_id"]); ?>" class="registered-item__edit">商品情報を編集する</a>
                 </li>
                 <?php endfor; ?>
             </ul>
         </div>
     </div>
-        
+</main>
 <?php include("../component/footer.php"); ?>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.matchHeight/0.7.2/jquery.matchHeight-min.js" integrity="sha512-/bOVV1DV1AQXcypckRwsR9ThoCj7FqTV2/0Bm79bL3YSyLkVideFLE3MIZkq1u5t28ke1c0n31WYCOrO01dsUg==" crossorigin="anonymous"></script>

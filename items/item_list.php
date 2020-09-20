@@ -37,24 +37,18 @@ function h($str){
 <?php include("../component/header.php"); ?>
     <div class="container">
         <div class="item-list__wrap">
-        <div class="about-user">
+        <!-- <div class="about-user">
             <p class="about-user__item">現在ログイン中のユーザー : <?php echo h($id); ?></p>
-            <?php if($user): ?>
-                <a href="../items/index.php" class="to__register-page">商品登録へ</a>
-            <?php endif; ?>
-            <p class="about-user__item"><a href="../users/cart.php">カートへ</a></p>
-            <p class="about-user__item"><a href="../users/logout.php"><?php echo h($message); ?></a></p>
-        </div>
+        </div> -->
         <h2>商品一覧</h2>
-         <p class="text-primary font-weight-bold"><?php echo h($db_success_message); ?></p>
             <ul class="item-list">
                 <?php for($i = 0; $i < count($items); $i++) : ?>
                 <li class="item-detail js-item-detail">
-                    <img src="../items/images/<?php echo h($items[$i]["item_thumbnail"]); ?>" alt="商品画像" class="item-detail__image">
-                    <p class="item-detail__id"><?php echo h($items[$i]["item_id"]); ?></p>
+                    <div class="trimming"><img src="../items/images/<?php echo h($items[$i]["item_thumbnail"]); ?>" alt="商品画像" class="item-detail__image"></div>
+                    <!-- <p class="item-detail__id">商品ID : <?php echo h($items[$i]["item_id"]); ?></p> -->
                     <p class="item-detail__name">商品名 : <?php echo h($items[$i]["item_name"]); ?></p>
                     <p class="item-detail__description">商品説明文 : <?php echo h($items[$i]["item_description"]); ?></p>
-                    <p class="item-detail__price">価格 : <span class="item-detail__price__number text-danger"><?php echo h($items[$i]["item_price"]); ?></span></p>
+                    <p class="item-detail__price">価格 : <span class="item-detail__price__number font-weight-bold"><?php echo h($items[$i]["item_price"]); ?></span>円（税別）</p>
                     <p class="item-detail__stock">在庫数 : <?php echo h($items[$i]["item_stock"]); ?></p>
                     <a href="../items/item_detail.php?code=<?php echo h($items[$i]["item_id"]); ?>">詳細を見る</a>
                 </li>

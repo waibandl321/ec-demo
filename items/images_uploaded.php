@@ -31,8 +31,6 @@ $stmt = $dbh->prepare($sql);
 $stmt->execute($data);
 $items = $stmt->fetch();
 $item_id = $items["item_id"];
-
-
 // ファイルがあれば処理実行
 if(isset($_FILES["upload_image"])){
 // アップロードされたファイル件を処理
@@ -46,14 +44,15 @@ for($i = 0; $i < count($_FILES["upload_image"]["name"]); $i++){
         // move_uploaded_fileでアップロードしたファイルを新しい場所に移動する 今回はローカルのimagesフォルダに格納する
         move_uploaded_file($_FILES["upload_image"]["tmp_name"][$i], "../items/images/" . $_FILES["upload_image"]["name"][$i]);
     }
-    //画像ファイルのinsert処理
-    $stmt = $dbh->prepare("INSERT INTO item_images(item_id, image_name) VALUES (?, ?)");
-    $data = [];
-    $data[] = $item_id;
-    $data[] = $_FILES["upload_image"]["name"][$i];
-    $stmt->execute($data);
-    $message = "商品情報の登録に成功しました！";
-    header('Location: ../items/index.php');
+        //画像ファイルのinsert処理
+        $sql = "INSERT INTO item_images(item_id, image_name) VALUES (?, ?)";
+        $stmt = $dbh->prepare($sql);
+        $data = [];
+        $data[] = $item_id;
+        $data[] = $_FILES["upload_image"]["name"][$i];
+        $stmt->execute($data);
+        $message = "商品情報の登録に成功しました！";
+        header('Location: ../items/index.php');
     }
 } else {
     $message = "画像を選択してください";

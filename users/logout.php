@@ -27,6 +27,7 @@ session_destroy();
 </head>
 <body>
 <?php include("../component/header.php"); ?>
+<main>
     <div class="container mypage">
         <h2>ログアウトページ</h2>
         <p>ログアウトしました</p>
@@ -35,6 +36,7 @@ session_destroy();
             <li><a href="./login.php">ログイン</a></li>
         </ul>
     </div>
+    </main>
     <?php include("../component/footer.php"); ?>
     <script src="./index.js"></script>
 </body>

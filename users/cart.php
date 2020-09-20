@@ -13,7 +13,7 @@ function h($str){
 
 // ログインしていない場合は、ログインリンクを表示する
 if(!$user) {
-    header('Location: ../items/item_list.php');
+    header('Location: ../users/login.php');
     exit;
 } else {
     //ログインユーザーに紐づく商品情報をCartテーブルから取得
@@ -67,12 +67,11 @@ foreach($items as $item) {
 </head>
 <body>
 <?php include("../component/header.php"); ?>
+<main>
     <div class="container">
-        <div class="about-user clearfix">
+        <!-- <div class="about-user clearfix">
             <p class="about-user__item">現在ログイン中のユーザー : <?php echo h($user_id); ?></p>
-            <p class="about-user__item"><a href="../items/item_list.php">商品一覧へ戻る</a></p>
-            <p class="about-user__item"><a href="../users/logout.php"><?php echo h($message); ?></a></p>
-        </div>
+        </div> -->
         <div class="cart">
          <div class="cart-items">
             <h2>SHOPPING CART</h2>
@@ -89,7 +88,7 @@ foreach($items as $item) {
                             <p><a href="../items/item_detail.php?code=<?php echo h($item["item_id"]); ?>"><?php echo h($item["item_name"]); ?></a></p>
                             <p>単品価格 : <?php echo h(floor($item["item_price"]) * 1.10); ?></p>
                             <p>数量 : <?php echo h($item["quantity"]); ?></p>
-                            <p>商品説明 : <?php echo h($item["item_description"]); ?></p>
+                            <p class="item-detail__description">商品説明 : <?php echo h($item["item_description"]); ?></p>
                         </div>
                     </div>
                 <?php endforeach;?>
@@ -106,6 +105,7 @@ foreach($items as $item) {
           </aside>
         </div>
     </div>
+    </main>
     <?php include("../component/footer.php"); ?>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.matchHeight/0.7.2/jquery.matchHeight-min.js" integrity="sha512-/bOVV1DV1AQXcypckRwsR9ThoCj7FqTV2/0Bm79bL3YSyLkVideFLE3MIZkq1u5t28ke1c0n31WYCOrO01dsUg==" crossorigin="anonymous"></script>

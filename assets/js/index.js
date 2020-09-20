@@ -44,7 +44,7 @@ jsContainer.style.paddingBottom = footerHeight + "px";
 ========================================*/
 const zoomArea = document.querySelector('.zoom__area');
 const zoomImage = zoomArea.querySelector('img');
-var size = 172;
+var size = 200;
 var scale = 400 / size;
 
 Array.prototype.forEach.call(document.querySelectorAll('.zoom__lens__container'), (container) => {
@@ -107,14 +107,30 @@ Array.prototype.forEach.call(document.querySelectorAll('.zoom__lens__container')
         lens.style.top = top + 'px';
         lens.style.left = left + 'px';
         zoomImage.style.marginLeft = -(left * scale) + 'px';
-        zoomImage.style.marginTop = -(top * scale) + 'px';
+        // zoomImage.style.marginTop = -(top * scale) + 'px';
     });
 })
-
+/*==========================================================
+商品詳細ページのサムネイル画像にhoverした時にメインイメージを切り替える
+==========================================================*/
+let thumbnails = [];
+thumbnails = document.querySelectorAll('.thumbnail');
+const mainImage = document.querySelector('.js_main_image');
+const mainImageSrc = mainImage.getAttribute('src');
+thumbnails.forEach((thumbnail) => {
+    thumbnail.addEventListener('mouseover', () => {        
+        mainImage.setAttribute('src', thumbnail.src);
+    });
+    thumbnail.addEventListener('mouseout', () => {
+        mainImage.setAttribute('src', mainImageSrc);
+    });
+})
 
 // jQuery
 $(function(){
     $('.js-item-detail').matchHeight();
+    $('.js-registered-item').matchHeight();
+
 });
 
 }

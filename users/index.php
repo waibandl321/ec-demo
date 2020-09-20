@@ -20,35 +20,26 @@ function h($str){
 if (!empty($_FILES['image']['name'])) {
     //ディレクトリの設定
     $upload_dir = '../users/images/';
-  //ファイルタイプのチェック : 下記のファイルタイプを満たす場合にアップロード処理を実行する
-  if($_FILES['image']['type'] === '.jpg' ||
-     $_FILES['image']['type'] === '.jpeg'||
-     $_FILES['image']['type'] === '.png' ||
-     $_FILES['image']['type'] === '.gif' ||
-     $_FILES['image']['type'] === '.svg') {
-        //パスの作成 basename関数でファイル名だけ取得する + [name]に格納する （一次領域）
-        $uploaded_file = $upload_dir . basename($_FILES['image']['name']);
-        //move_uploaded_file関数で指定ディレクトリにファイルをアップロード
-        move_uploaded_file($_FILES['image']['tmp_name'], $uploaded_file);
-        //ファイルチェックが完了してtrueの場合はユーザー情報のinsert処理
-        if(!empty($_POST)) {
-            $stmt = $dbh->prepare("insert into users(name, email, password, address, user_image) values (?, ?, ?, ?, ?)");
-            $data = [];
-            $data[] = $userName;
-            $data[] = $email;
-            $data[] = password_hash($password, PASSWORD_DEFAULT);//暗号化されたパスワードの中にsolt　solt = 暗号化の強度を高める
-            $data[] = $address;
-            $data[] = $image_name;
-            $stmt->execute($data);
-            $login_link = '<a href="../users/login.php">ログインページへ</a>';
-            echo $data;
-            $message = '登録に成功しました!';
-        } else {
-            $message = 'ユーザー情報を入力してください';
-        }
-     } else {
-         $file_error_message = ".jpg, .jpeg, .png, .gif, .svg拡張子以外のファイルはアップロードできません";
-     }
+    //パスの作成 basename関数でファイル名だけ取得する + [name]に格納する （一次領域）
+    $uploaded_file = $upload_dir . basename($_FILES['image']['name']);
+    //move_uploaded_file関数で指定ディレクトリにファイルをアップロード
+    move_uploaded_file($_FILES['image']['tmp_name'], $uploaded_file);
+    //ファイルチェックが完了してtrueの場合はユーザー情報のinsert処理
+    if(!empty($_POST)) {
+        $stmt = $dbh->prepare("insert into users(name, email, password, address, user_image) values (?, ?, ?, ?, ?)");
+        $data = [];
+        $data[] = $userName;
+        $data[] = $email;
+        $data[] = password_hash($password, PASSWORD_DEFAULT);//暗号化されたパスワードの中にsolt　solt = 暗号化の強度を高める
+        $data[] = $address;
+        $data[] = $image_name;
+        $stmt->execute($data);
+        $login_link = 'ログインページへ';
+        echo $data;
+        $message = '登録に成功しました!';
+    } else {
+        $message = 'ユーザー情報を入力してください';
+    }
 }
 
 
@@ -66,44 +57,44 @@ if (!empty($_FILES['image']['name'])) {
 </head>
 <body>
     <?php include("../component/header.php"); ?>
-    <p><?php echo h($data); ?></p>
+    <main>
     <div class="container">
         <div class="user-registration">
-        <h2 class="page__title">ユーザー登録</h2>
-        <p class="text-primary font-weight-bold"><?php echo h($db_success_message); ?></p>
-        <p class="text-danger font-weight-bold"><?php echo h($message); ?></p>
-        <form method="POST" action="./index.php" enctype="multipart/form-data">
-        <div class="form-group">
-                <label for="name"">名前</label>
-                <input type="text" name="username" class="form-control" id="name"" placeholder="名前" required>
-            </div>
+            <h2 class="page__title">ユーザー登録</h2>
+            <p class="text-danger font-weight-bold"><?php echo h($message); ?></p>
+            <form method="POST" action="./index.php" enctype="multipart/form-data">
             <div class="form-group">
-                <label for="email">メールアドレス</label>
-                <input type="email" name="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="メールアドレス" required>
-                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-            </div>
-            <div class="form-group">
-                <label for="password">パスワード</label>
-                <input type="password" name="password" class="form-control" id="password" placeholder="パスワード" required>
-            </div>
-            <div class="form-group">
-                <label for="address">住所</label>
-                <input type="text"" name="address" class="form-control" id="address" placeholder="住所" required>
-            </div>
-            <div class="form-group">
-                <label for="image">画像</label>
-                <input type="file"" name="image" class="form-control" id="user-image" required>
-                <p class="text-danger"><?php echo $file_error_message; ?></p>
-            </div>
-            <input type="submit" name="register" id="saveBtn" class="btn btn-warning btn-lg btn-block mt-4" value="登録する">
-        </form>
-        <div class="page-links alert alert-secondary">
+                    <label for="name"">名前</label>
+                    <input type="text" name="username" class="form-control" id="name"" placeholder="名前" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">メールアドレス</label>
+                    <input type="email" name="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="メールアドレス" required>
+                    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                </div>
+                <div class="form-group">
+                    <label for="password">パスワード</label>
+                    <input type="password" name="password" class="form-control" id="password" placeholder="パスワード" required>
+                </div>
+                <div class="form-group">
+                    <label for="address">住所</label>
+                    <input type="text"" name="address" class="form-control" id="address" placeholder="住所" required>
+                </div>
+                <div class="form-group">
+                    <label for="image">画像</label>
+                    <input type="file"" name="image" class="form-control" id="user-image" required>
+                    <p class="text-danger"><?php echo $file_error_message; ?></p>
+                </div>
+                <input type="submit" name="register" id="saveBtn" class="btn btn-lg btn-block mt-4" value="登録する">
+            </form>
+        <div class="page-links">
             <p><a href="../users/login.php" class="font-weight-bold">すでに登録済みの方はこちら</a></p>
         </div>
-        <p><?php echo h($login_link); ?></p>
+        <p><a href="../users/login.php"><?php echo h($login_link); ?></a></p>
         <p><?php echo h($session_id); ?></p>
      </div>
     </div>
+    </main>
     <?php include("../component/footer.php"); ?>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>

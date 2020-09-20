@@ -1,6 +1,9 @@
 <?php
 $signin_link = 'サインイン';
 $signout_message = 'サインアウト';
+
+$user = $_SESSION["user"];
+$id = $_SESSION["user"]["id"];
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -17,25 +20,42 @@ $signout_message = 'サインアウト';
         <div class="header-top__menu-icon">
         <i class="fas fa-bars"></i>
         </div>
-        <div class="header-top__logo">
+        <!-- <div class="header-top__logo">
             <a href="../users/index.php"><img src="../images/logo.jpg" alt="ロゴ画像"></a>
-        </div>
-        <div class="header-top__search-bar">
+        </div> -->
+        <!-- <div class="header-top__search-bar">
             <form action="" method="POST">
                 <div class="form-group header-top__form-group">
                     <input type="text" name="search" class="form-control" id="itemName" placeholder="検索キーワードを入力してください" required>
                     <input type="submit" value="探す">
                 </div>
             </form>
-        </div>
-        <div class="header-top__account-information">
-            <a href="../users/mypage.php">アカウント情報</a>
-        </div>
-        <div class="header-top__cart-link">
-            <i class="fas fa-cart-plus"></i>カート
+        </div> -->
+        <div class="header-top__links">
+            <div class="header-top__item_list header-top__link">
+                <a href="../items/item_list.php">商品一覧</a>
+            </div>
+            <div class="header-top__account-information header-top__link">
+                <a href="../users/mypage.php">マイページ</a>
+            </div>
+            <?php if(!$_SESSION["login"]) : ?>
+            <div class="header-top__account-information header-top__link">
+                <a href="../users/login.php">ログイン</a>
+            </div>
+            <div class="header-top__account-information header-top__link">
+                <a href="../users/index.php">ユーザー新規登録</a>
+            </div>
+            <?php else : ?>
+            <div class="header-top__account-information header-top__link">
+                <a href="../users/logout.php">ログアウト</a>
+            </div>
+            <?php endif; ?>
+            <a class="header-top__cart-link header-top__link" href="../users/cart.php">
+                <i class="fas fa-cart-plus"></i>カート
+            </a>
         </div>
     </div>
-    <div class="header-bottom">
+    <!-- <div class="header-bottom">
         <div class="header-bottom__delivery-location">
             <div class="delivery-location__icon">
             <i class="fas fa-location-arrow"></i>
@@ -53,7 +73,7 @@ $signout_message = 'サインアウト';
         <div class="header-bottom__notice">
             <a href="">COVIDー19に対する弊社の対応</a>
         </div>
-    </div>
+    </div> -->
 </header>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
 <script src="../assets/js/index.js"></script>

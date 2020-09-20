@@ -98,28 +98,20 @@ if(isset($cart_quantity)) {
     <div class="container">
         <div class="item-page">
             <h2>商品ページ</h2>
-            <div class="item-detail__links">
-                <?php if($user): ?>
-                <a href="../items/index.php" class="to__register-page">商品登録へ</a>
-                <?php endif; ?>
-                <a href="../users/cart.php" class="to__cart-page">カートへ</a>
-                <a href="../items/item_list.php" class="back-to__item-list">商品一覧へ戻る</a>
-            </div>
-            <p class="text-primary font-weight-bold"><?php echo h($db_success_message); ?></p>
             <p class="text-primary font-weight-bold"><?php echo h($message); ?></p>
             <p class="text-primary font-weight-bold"><?php echo h($same_item_message); ?></p>
             <?php foreach($item_info as $item) : ?>
             <div class="item-detail__wrap">
                 <div class="item-detail__images">
                     <div class="item-detail__images__main zoom__lens__container">
-                        <img src="../items/images/<?php echo h($item["item_thumbnail"]); ?>" alt="商品のサムネイル画像" class="zoom__item">
+                        <img src="../items/images/<?php echo h($item["item_thumbnail"]); ?>" alt="商品のサムネイル画像" class="zoom__item js_main_image">
                         <div class="zoom_lens"></div>
                     </div>
                     <ul class="other-image__items">
                     <!-- その他の画像の取得 -->
                     <?php for($i = 0; $i < count($item_images); $i++) : ?>
                         <li class="other-image__item">
-                            <img src="../items/images/<?php echo h($item_images[$i]["image_name"]); ?>" alt="他の商品画像が入ります">
+                            <img src="../items/images/<?php echo h($item_images[$i]["image_name"]); ?>" alt="他の商品画像が入ります" class="thumbnail">
                         </li>
                     <?php endfor; ?>
                     </ul>
@@ -130,26 +122,26 @@ if(isset($cart_quantity)) {
                 <div class="item-detail__block">
                     <!-- 商品詳細 -->
                     <p class="item-detail__block__id">
-                        商品id : <?php echo h($item["item_id"]); ?>
+                        <span>商品id</span> : <?php echo h($item["item_id"]); ?>
                     </p>
                     <p class="item-detail__block__name">
-                        商品名 : <?php echo h($item["item_name"]); ?>
+                        <span>商品名</span> : <?php echo h($item["item_name"]); ?>
                     </p>
                     <p class="item-detail__block__price">
-                        価格 : <?php echo h($item["item_price"]); ?>
+                        <span>価格</span> : <?php echo h($item["item_price"]); ?>
                     </p>
                     <p class="item-detail__block__description">
-                        商品説明 : <?php echo h($item["item_description"]); ?>
+                        <span>商品説明</span> : <?php echo h($item["item_description"]); ?>
                     </p>
                     <p class="item-detail__block__stock">
-                        在庫数 : <?php echo h($item["item_stock"]); ?>
+                        <span>在庫数</span> : <?php echo h($item["item_stock"]); ?>
                     </p>
                     <p class="item-detail__block__created-at">
-                        出品日時 : <?php echo h($item["created_at"]); ?>
+                        <span>出品日時</span> : <?php echo h($item["created_at"]); ?>
                     </p>
                     <form action="" method="POST">
-                        <div>
-                            個数を選択
+                        <div class="select_quantity">
+                            <span>個数を選択 : </span>
                             <!-- 　商品詳細ページで表示しているアイテムがカートに存在 or 存在しない場合にselectボックスの表示を切り替える -->
                             <?php if(!$cart_quantity) : ?>
                             <!-- もしカート内に同じアイテムが存在しない場合に表示するselectボックス-->
@@ -186,11 +178,11 @@ if(isset($cart_quantity)) {
                             <!--　　条件分岐ここまで 　-->
                             </div>
                             <div class="back-to-item-list">
-                                <a href="../items/item_list.php" class="back-to-item-list___link">戻る</a>
+                                <a href="../items/item_list.php" class="back-to-item-list___link">商品一覧へ戻る</a>
                             </div>
                         </div>
                     </form>
-                    <p class="text-primary"><?php echo h($cart_in_message); ?></p>
+                    <!-- <p class="text-primary"><?php echo h($cart_in_message); ?></p> -->
                     <p class="text-primary"><?php echo h($finish_insert_message); ?></p>
                     <p class="text-primary"><?php echo h($select_message); ?></p>
                 </div>

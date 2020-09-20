@@ -10,7 +10,7 @@
 <body>
     <footer>
         <div class="footer-top">
-            <a href="" class="back-top-top__link">Back to top</a>
+            <a href="#" class="back-top-top__link">Back to top</a>
         </div>
         <div class="footer-middle">
 

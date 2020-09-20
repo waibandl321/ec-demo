@@ -26,10 +26,10 @@ function h($str){
 }
 
 //セッションに情報保持　=> 必要ない処理のためコメントアウト
-// $_SESSION["item_name"] = $item_name;
-// $_SESSION["item_price"] = $item_price;
-// $_SESSION["item_description"] = $item_description;
-// $_SESSION["item_stock"] = $item_stock;
+$_SESSION["item_name"] = $item_name;
+$_SESSION["item_price"] = $item_price;
+$_SESSION["item_description"] = $item_description;
+$_SESSION["item_stock"] = $item_stock;
 
 // 画像の取得
 $item_thumbnail = $_FILES['item_thumbnail']['name'];
@@ -114,13 +114,11 @@ if(!empty($_FILES['item_thumbnail']['name'])) {
     <div class="container">
         <div class="item-registration__outer">
         <div class="item-registration">
-            <div class="login-user">現在ログイン中のユーザー : <?php echo h($id); ?></div>
             <?php if(!isset($_GET["code"])) : ?>
             <h2>商品登録ページ</h2>
             <?php else : ?>
             <h2>商品情報の編集</h2>
             <?php endif; ?>
-            <p class="text-primary"><?php echo h($db_success_message); ?></p>
             <p class="text-danger"><?php echo h($message); ?></p>
             <!-- 新規登録フォーム パラメーターにcodeが付与されていない場合 -->
             <?php if(!isset($_GET["code"])) : ?>
@@ -145,7 +143,7 @@ if(!empty($_FILES['item_thumbnail']['name'])) {
                     <label for="item-thumbnail"">商品画像1(ファイルを選択 or ドラッグ&ドロップ)</label>
                     <input type="file" name="item_thumbnail" class="form-control form-control-file" id="itemThumbnail">
                 </div>
-                <input type="submit" class="btn btn-primary" name="submit" value="保存する">
+                <input type="submit" class="btn btn-large btn-block save__btn" name="submit" value="保存する">
                 </form>
                 <?php else : ?>
                 <!-- 更新フォーム 商品情報を編集するボタンが押されてパラメータが付与されている場合に時に実行-->
@@ -166,10 +164,9 @@ if(!empty($_FILES['item_thumbnail']['name'])) {
                         <label for="item-stock">在庫数</label>
                         <input type="number" name="edit_stock" class="form-control" id="itemStock" value="<?php echo h($edit_item["item_stock"]); ?>" placeholder="在庫数を入力してください" required>
                     </div>
-                    <input type="submit" class="btn btn-primary" name="edit" value="更新する">
+                    <input type="submit" class="btn btn-large btn-block uploaded_btn" name="edit" value="更新する">
                 </form>
                 <?php endif; ?>
-                <a href="../items/item_list.php">商品一覧ページへ</a>
         </div>
         <!-- 商品画像追加 -->
         <?php if(isset($submit)) : ?>

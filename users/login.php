@@ -41,6 +41,7 @@ $errors = [];
 </head>
 <body>
 <?php include("../component/header.php"); ?>
+<main>
     <div class="container">
         <h2>ログイン</h2>
         <!-- エラーチェック -->
@@ -55,21 +56,27 @@ $errors = [];
 
         <!-- ログインフォーム -->
         <div class="login">
-        <form action="" method="POST">
-        <div class="form-group">
-                <label for="email">メールアドレス</label>
-                <input type="email" name="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="メールアドレス" required>
-                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-            </div>
+            <form action="" method="POST">
             <div class="form-group">
-                <label for="password">パスワード</label>
-                <input type="password" name="password" class="form-control" id="password" placeholder="パスワード" required>
-            </div>
-            <button type="submit" name="login" id="loginBtn" class="btn btn-warning btn-lg btn-block mt-4">ログインする</button>
-        </form>
+                    <label for="email">メールアドレス</label>
+                    <input type="email" name="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="メールアドレス" required>
+                    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                </div>
+                <div class="form-group">
+                    <label for="password">パスワード</label>
+                    <input type="password" name="password" class="form-control" id="password" placeholder="パスワード" required>
+                </div>
+                <button type="submit" name="login" id="loginBtn" class="btn btn-lg btn-block mt-4">ログインする</button>
+            </form>
         </div>
         <!-- ログインフォーム -->
+        <!--　登録がまだの場合 -->
+        <div class="register_link">
+            <a href="../users/index.php">登録がまだの方はこちら</a>
+        </div>
+        <!--　登録がまだの場合 -->
     </div>
+    </main>
     <?php include("../component/footer.php"); ?>
     <script src="../assets/js/index.js"></script>
 </body>
