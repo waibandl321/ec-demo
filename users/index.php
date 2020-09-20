@@ -9,28 +9,40 @@ $email = $_POST['email'];
 $password = $_POST['password'];
 $address = $_POST['address'];
 $image_name = $_FILES['image']['name'];
+
 //アップ画像がfilesに入る
 if (!empty($_FILES['image']['name'])) {
-  $upload_dir = '../users/images/'; //ディレクトリの設定
-  $uploaded_file = $upload_dir . basename($_FILES['image']['name']); //パスの作成 basename関数でファイル名だけ取得する + [name]に格納する （一次領域）
-  move_uploaded_file($_FILES['image']['tmp_name'], $uploaded_file); //move_uploaded_file関数でアップしたいディレクトリに移動
-}
-
-
-if(!empty($_POST)) {
-    $stmt = $dbh->prepare("insert into users(name, email, password, address, user_image) values (?, ?, ?, ?, ?)");
-    $data = [];
-    $data[] = $userName;
-    $data[] = $email;
-    $data[] = password_hash($password, PASSWORD_DEFAULT);//暗号化されたパスワードの中にsolt　solt = 暗号化の強度を高める    
-    $data[] = $address;
-    $data[] = $image_name;
-    $stmt->execute($data);
-    $login_link = '<a href="../users/login.php">ログインページへ</a>';
-    echo $data;
-    $message = '登録に成功しました!';
-} else {
-    $message = 'ユーザー情報を入力してください';
+    //ディレクトリの設定
+    $upload_dir = '../users/images/';
+  //ファイルタイプのチェック : 下記のファイルタイプを満たす場合にアップロード処理を実行する
+  if($_FILES['image']['type'] === '.jpg' ||
+     $_FILES['image']['type'] === '.jpeg'||
+     $_FILES['image']['type'] === '.png' ||
+     $_FILES['image']['type'] === '.gif' ||
+     $_FILES['image']['type'] === '.svg') {
+        //パスの作成 basename関数でファイル名だけ取得する + [name]に格納する （一次領域）
+        $uploaded_file = $upload_dir . basename($_FILES['image']['name']);
+        //move_uploaded_file関数で指定ディレクトリにファイルをアップロード
+        move_uploaded_file($_FILES['image']['tmp_name'], $uploaded_file);
+        //ファイルチェックが完了してtrueの場合はユーザー情報のinsert処理
+        if(!empty($_POST)) {
+            $stmt = $dbh->prepare("insert into users(name, email, password, address, user_image) values (?, ?, ?, ?, ?)");
+            $data = [];
+            $data[] = $userName;
+            $data[] = $email;
+            $data[] = password_hash($password, PASSWORD_DEFAULT);//暗号化されたパスワードの中にsolt　solt = 暗号化の強度を高める
+            $data[] = $address;
+            $data[] = $image_name;
+            $stmt->execute($data);
+            $login_link = '<a href="../users/login.php">ログインページへ</a>';
+            echo $data;
+            $message = '登録に成功しました!';
+        } else {
+            $message = 'ユーザー情報を入力してください';
+        }
+     } else {
+         $file_error_message = ".jpg, .jpeg, .png, .gif, .svg拡張子以外のファイルはアップロードできません";
+     }
 }
 
 
@@ -75,6 +87,7 @@ if(!empty($_POST)) {
             <div class="form-group">
                 <label for="image">画像</label>
                 <input type="file"" name="image" class="form-control" id="user-image" required>
+                <p class="text-danger"><?php echo $file_error_message; ?></p>
             </div>
             <input type="submit" name="register" id="saveBtn" class="btn btn-warning btn-lg btn-block mt-4" value="登録する">
         </form>
