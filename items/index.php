@@ -109,7 +109,11 @@ if(!empty($_FILES['item_thumbnail']['name'])) {
         <div class="item-registration__outer">
         <div class="item-registration">
             <div class="login-user">現在ログイン中のユーザー : <?php echo $id; ?></div>
+            <?php if(!isset($_GET["code"])) : ?>
             <h2>商品登録ページ</h2>
+            <?php else : ?>
+            <h2>商品情報の編集</h2>
+            <?php endif; ?>
             <p class="text-primary"><?php echo $db_success_message; ?></p>
             <p class="text-danger"><?php echo $message; ?></p>
             <!-- 新規登録フォーム パラメーターにcodeが付与されていない場合 -->
