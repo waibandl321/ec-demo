@@ -14,6 +14,12 @@ $item_stock = $_SESSION['item_stock'];
 
 $errors = [];
 
+//悪意のあるスクリプトを入力されたときにXSSを防ぐための方法にhtmlspecialchars関数を使用
+//よく使用するため関数化
+function h($str){
+    return htmlspecialchars($str, ENT_QUOTES, 'UTF-8');
+}
+
 //item_idをselectする処理(全ての条件に合致したデータのみを取得)
 $sql = "SELECT item_id FROM items WHERE item_name = ? AND item_price = ? AND item_description = ? AND item_stock = ?";
 $data = [];
@@ -68,7 +74,7 @@ for($i = 0; $i < count($_FILES["upload_image"]["name"]); $i++){
 <?php include("../component/header.php"); ?>
     <main class="container">
         <div class="item-detail__links">
-            <div class="login-user">現在ログイン中のユーザー : <?php echo $id; ?></div>
+            <div class="login-user">現在ログイン中のユーザー : <?php echo h($id); ?></div>
             <?php if($user): ?>
             <a href="../items/index.php" class="to__register-page">商品登録へ</a>
             <?php endif; ?>
@@ -76,7 +82,7 @@ for($i = 0; $i < count($_FILES["upload_image"]["name"]); $i++){
             <a href="../items/item_list.php" class="back-to__item-list">商品一覧へ</a>
         </div>
         <h2>追加で商品画像を登録する</h2>
-        <p class="text-primary"><?php echo $db_success_message; ?></p>
+        <p class="text-primary"><?php echo h($db_success_message); ?></p>
         <div class="register-images">
             <p class="text-danger">商品画像を登録する</p>
             <form action="../items/images_uploaded.php" method="POST" enctype="multipart/form-data">
@@ -101,7 +107,7 @@ for($i = 0; $i < count($_FILES["upload_image"]["name"]); $i++){
                 <input type="file" class="form-control form-control-file" name="upload_image[]" multiple>
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
-            <p class="text-primary"><?php echo $message; ?></p>
+            <p class="text-primary"><?php echo h($message); ?></p>
             </form>
         </div>
     </main>

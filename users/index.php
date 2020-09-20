@@ -9,6 +9,13 @@ $email = $_POST['email'];
 $password = $_POST['password'];
 $address = $_POST['address'];
 $image_name = $_FILES['image']['name'];
+
+//悪意のあるスクリプトを入力されたときにXSSを防ぐための方法にhtmlspecialchars関数を使用
+//よく使用するため関数化
+function h($str){
+    return htmlspecialchars($str, ENT_QUOTES, 'UTF-8');
+}
+
 //アップ画像がfilesに入る
 if (!empty($_FILES['image']['name'])) {
   $upload_dir = '../users/images/'; //ディレクトリの設定
@@ -48,12 +55,12 @@ if(!empty($_POST)) {
 </head>
 <body>
     <?php include("../component/header.php"); ?>
-    <p><?php echo $data; ?></p>
+    <p><?php echo h($data); ?></p>
     <div class="container">
         <div class="user-registration">
         <h2 class="page__title">ユーザー登録</h2>
-        <p class="text-primary font-weight-bold"><?php echo $db_success_message; ?></p>
-        <p class="text-danger font-weight-bold"><?php echo $message; ?></p>
+        <p class="text-primary font-weight-bold"><?php echo h($db_success_message); ?></p>
+        <p class="text-danger font-weight-bold"><?php echo h($message); ?></p>
         <form method="POST" action="./index.php" enctype="multipart/form-data">
         <div class="form-group">
                 <label for="name"">名前</label>
@@ -81,8 +88,8 @@ if(!empty($_POST)) {
         <div class="page-links alert alert-secondary">
             <p><a href="../users/login.php" class="font-weight-bold">すでに登録済みの方はこちら</a></p>
         </div>
-        <p><?php echo $login_link; ?></p>
-        <p><?php echo $session_id; ?></p>
+        <p><?php echo h($login_link); ?></p>
+        <p><?php echo h($session_id); ?></p>
      </div>
     </div>
     <?php include("../component/footer.php"); ?>

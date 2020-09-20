@@ -5,6 +5,12 @@ require_once('../config/dbconnect.php');
 $user = $_SESSION["user"];
 $user_id = $_SESSION["user"]["id"];
 
+//悪意のあるスクリプトを入力されたときにXSSを防ぐための方法にhtmlspecialchars関数を使用
+//よく使用するため関数化
+function h($str){
+    return htmlspecialchars($str, ENT_QUOTES, 'UTF-8');
+}
+
 // ログインしていない場合は、ログインリンクを表示する
 if(!$user) {
     header('Location: ../items/item_list.php');
@@ -63,9 +69,9 @@ foreach($items as $item) {
 <?php include("../component/header.php"); ?>
     <div class="container">
         <div class="about-user clearfix">
-            <p class="about-user__item">現在ログイン中のユーザー : <?php echo $user_id; ?></p>
+            <p class="about-user__item">現在ログイン中のユーザー : <?php echo h($user_id); ?></p>
             <p class="about-user__item"><a href="../items/item_list.php">商品一覧へ戻る</a></p>
-            <p class="about-user__item"><a href="../users/logout.php"><?php echo $message; ?></a></p>
+            <p class="about-user__item"><a href="../users/logout.php"><?php echo h($message); ?></a></p>
         </div>
         <div class="cart">
          <div class="cart-items">
@@ -74,25 +80,25 @@ foreach($items as $item) {
                 <?php foreach($_SESSION["items"] as $item) : ?>
                     <div class="cart-item">
                         <div class="cart-item__image">
-                            <img src="../items/images/<?php echo $item["item_thumbnail"]; ?>" alt="商品画像">
+                            <img src="../items/images/<?php echo h($item["item_thumbnail"]); ?>" alt="商品画像">
                         </div>
                         <div class="cart-item__infomation">
                             <!-- 小計 = 商品価格(税込) * 数量 -->
-                            <p class="sum-price__individual">小計 : <?php echo floor($item["item_price"] * 1.10) * $item["quantity"]; ?>円(税込)</p>
-                            <p>商品ID : <?php echo $item["item_id"]; ?></p>
-                            <p><a href="../items/item_detail.php?code=<?php echo $item["item_id"]; ?>"><?php echo $item["item_name"]; ?></a></p>
-                            <p>単品価格 : <?php echo floor($item["item_price"] * 1.10); ?></p>
-                            <p>数量 : <?php echo $item["quantity"]; ?></p>
-                            <p>商品説明 : <?php echo $item["item_description"]; ?></p>
+                            <p class="sum-price__individual">小計 : <?php echo h(floor($item["item_price"]) * 1.10) * $item["quantity"]; ?>円(税込)</p>
+                            <p>商品ID : <?php echo h($item["item_id"]); ?></p>
+                            <p><a href="../items/item_detail.php?code=<?php echo h($item["item_id"]); ?>"><?php echo h($item["item_name"]); ?></a></p>
+                            <p>単品価格 : <?php echo h(floor($item["item_price"]) * 1.10); ?></p>
+                            <p>数量 : <?php echo h($item["quantity"]); ?></p>
+                            <p>商品説明 : <?php echo h($item["item_description"]); ?></p>
                         </div>
                     </div>
                 <?php endforeach;?>
-                <div class="cart-item__sum">お支払い合計金額 : <?php echo $sum; ?>円(税込)</div>
+                <div class="cart-item__sum">お支払い合計金額 : <?php echo h($sum); ?>円(税込)</div>
             </div>
           </div>
           <aside class="checkout-link">
             <div class="total__price">
-             <p class="cart-item__sum__aside">お支払い合計金額 : <?php echo $sum; ?>円(税込)</p>
+             <p class="cart-item__sum__aside">お支払い合計金額 : <?php echo h($sum); ?>円(税込)</p>
             </div>
             <div class="to-checkout-page">
                 <a href="">決済画面へ</a>

@@ -19,6 +19,12 @@ $item_price = $_POST['item_price'];
 $item_description = $_POST['item_description'];
 $item_stock = $_POST['item_stock'];
 
+//悪意のあるスクリプトを入力されたときにXSSを防ぐための方法にhtmlspecialchars関数を使用
+//よく使用するため関数化
+function h($str){
+    return htmlspecialchars($str, ENT_QUOTES, 'UTF-8');
+}
+
 //セッションに情報保持　=> 必要ない処理のためコメントアウト
 // $_SESSION["item_name"] = $item_name;
 // $_SESSION["item_price"] = $item_price;
@@ -108,14 +114,14 @@ if(!empty($_FILES['item_thumbnail']['name'])) {
     <div class="container">
         <div class="item-registration__outer">
         <div class="item-registration">
-            <div class="login-user">現在ログイン中のユーザー : <?php echo $id; ?></div>
+            <div class="login-user">現在ログイン中のユーザー : <?php echo h($id); ?></div>
             <?php if(!isset($_GET["code"])) : ?>
             <h2>商品登録ページ</h2>
             <?php else : ?>
             <h2>商品情報の編集</h2>
             <?php endif; ?>
-            <p class="text-primary"><?php echo $db_success_message; ?></p>
-            <p class="text-danger"><?php echo $message; ?></p>
+            <p class="text-primary"><?php echo h($db_success_message); ?></p>
+            <p class="text-danger"><?php echo h($message); ?></p>
             <!-- 新規登録フォーム パラメーターにcodeが付与されていない場合 -->
             <?php if(!isset($_GET["code"])) : ?>
             <form method="POST" action="" enctype="multipart/form-data">
@@ -146,19 +152,19 @@ if(!empty($_FILES['item_thumbnail']['name'])) {
                 <form method="POST" action="" enctype="multipart/form-data">
                     <div class="form-group">
                         <label for="item-name">商品名</label>
-                        <input type="text" name="edit_name" class="form-control" id="itemName" value="<?php echo $edit_item["item_name"]; ?>" placeholder="商品名を入力してください" required>
+                        <input type="text" name="edit_name" class="form-control" id="itemName" value="<?php echo h($edit_item["item_name"]); ?>" placeholder="商品名を入力してください" required>
                     </div>
                     <div class="form-group">
                         <label for="item-price">商品価格</label>
-                        <input type="number" name="edit_price" class="form-control" id="itemPrice" value="<?php echo $edit_item["item_price"]; ?>" placeholder="商品価格を入力してください" required>
+                        <input type="number" name="edit_price" class="form-control" id="itemPrice" value="<?php echo h($edit_item["item_price"]); ?>" placeholder="商品価格を入力してください" required>
                     </div>
                     <div class="form-group">
                         <label for="item-description">商品説明文</label>
-                        <textarea class="form-control" name="edit_description" id="itemDescription" placeholder="商品説明文を入力してください" required><?php echo $edit_item["item_description"]; ?></textarea>
+                        <textarea class="form-control" name="edit_description" id="itemDescription" placeholder="商品説明文を入力してください" required><?php echo h($edit_item["item_description"]); ?></textarea>
                     </div>
                     <div class="form-group">
                         <label for="item-stock">在庫数</label>
-                        <input type="number" name="edit_stock" class="form-control" id="itemStock" value="<?php echo $edit_item["item_stock"]; ?>" placeholder="在庫数を入力してください" required>
+                        <input type="number" name="edit_stock" class="form-control" id="itemStock" value="<?php echo h($edit_item["item_stock"]); ?>" placeholder="在庫数を入力してください" required>
                     </div>
                     <input type="submit" class="btn btn-primary" name="edit" value="更新する">
                 </form>

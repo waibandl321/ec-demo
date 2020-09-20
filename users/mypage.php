@@ -6,6 +6,12 @@ $user = $_SESSION["user"];
 $id = $_SESSION["user"]["id"];
 $image = $_SESSION["user"]["user_image"];
 
+//悪意のあるスクリプトを入力されたときにXSSを防ぐための方法にhtmlspecialchars関数を使用
+//よく使用するため関数化
+function h($str){
+    return htmlspecialchars($str, ENT_QUOTES, 'UTF-8');
+}
+
 if(!$_SESSION["login"]) {
     header('Location: ../users/login.php');
     exit;
@@ -36,15 +42,15 @@ if(!$_SESSION["login"]) {
 <?php include("../component/header.php"); ?>
     <div class="container mypage">
         <div>
-            <div class="login-user">現在ログイン中のユーザーid : <?php echo $id; ?></div>
+            <div class="login-user">現在ログイン中のユーザーid : <?php echo h($id); ?></div>
             <h2>マイページ</h2>
             <a class="logout" href="../users/logout.php">ログアウトする</a>
             <ul class="user-information">
-            <li><?php echo $id; ?></li>
-            <li><?php echo $user["name"]; ?></li>
-            <li><?php echo $user["email"]; ?></li>
-            <li><?php echo $user["address"]; ?></li>
-            <li><img src="./images/<?php echo $image; ?>"></li>
+            <li><?php echo h($id); ?></li>
+            <li><?php echo h($user["name"]); ?></li>
+            <li><?php echo h($user["email"]); ?></li>
+            <li><?php echo h($user["address"]); ?></li>
+            <li><img src="./images/<?php echo h($image); ?>"></li>
             </ul>
             <a href="../items/index.php">商品登録する</a>
             <a href="../items/item_list.php">商品一覧ページへ</a>
@@ -54,13 +60,13 @@ if(!$_SESSION["login"]) {
             <ul class="registered-items">
                 <?php for($i = 0; $i < count($items); $i++) : ?>
                 <li class="registered-item">
-                    <img src="../items/images/<?php echo $items[$i]["item_thumbnail"]; ?>" alt="商品画像" class="item-detail__image">
-                    <p class="registered-item__id"><?php echo $items[$i]["item_id"]; ?></p>
-                    <p class="registered-item__name">商品名 : <?php echo $items[$i]["item_name"]; ?></p>
-                    <p class="registered-item__description">商品説明文 : <?php echo $items[$i]["item_description"]; ?></p>
-                    <p class="registered-item__price">価格 : <span class="price__number text-danger"><?php echo $items[$i]["item_price"]; ?></span></p>
-                    <p class="registered-item__stock">在庫数 : <?php echo $items[$i]["item_stock"]; ?></p>
-                    <a href="../items/index.php?code=<?php echo $items[$i]["item_id"]; ?>">商品情報を編集する</a>
+                    <img src="../items/images/<?php echo h($items[$i]["item_thumbnail"]); ?>" alt="商品画像" class="item-detail__image">
+                    <p class="registered-item__id"><?php echo h($items[$i]["item_id"]); ?></p>
+                    <p class="registered-item__name">商品名 : <?php echo h($items[$i]["item_name"]); ?></p>
+                    <p class="registered-item__description">商品説明文 : <?php echo h($items[$i]["item_description"]); ?></p>
+                    <p class="registered-item__price">価格 : <span class="price__number text-danger"><?php echo h($items[$i]["item_price"]); ?></span></p>
+                    <p class="registered-item__stock">在庫数 : <?php echo h($items[$i]["item_stock"]); ?></p>
+                    <a href="../items/index.php?code=<?php echo h($items[$i]["item_id"]); ?>">商品情報を編集する</a>
                 </li>
                 <?php endfor; ?>
             </ul>
