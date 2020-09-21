@@ -10,15 +10,19 @@
     
 </head>
 <body>
-    
-    <h1>トップページです</h1>
-    <ul>
-        <li><a href="../users/index.php">ユーザー登録</a></li>
-        <li><a href="../users/login.php">ログイン</a></li>
-        <li><a href="../items/index.php">商品登録</a></li>
-        <li><a href="../items/item_list.php">商品一覧</a></li>
-    </ul>
-
+<?php include("./component/header.php"); ?>
+  <main>
+    <div class="container">
+     <h1>トップページです</h1>
+        <ul>
+            <li><a href="../users/index.php">ユーザー登録</a></li>
+            <li><a href="../users/login.php">ログイン</a></li>
+            <li><a href="../items/index.php">商品登録</a></li>
+            <li><a href="../items/item_list.php">商品一覧</a></li>
+        </ul>
+     </div>
+    </main>
+    <?php include("./component/footer.php"); ?>
     <script src="../assets/js/index.js"></script>
 </body>
 </html>

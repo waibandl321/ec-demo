@@ -182,7 +182,6 @@ if(isset($cart_quantity)) {
                             </div>
                         </div>
                     </form>
-                    <!-- <p class="text-primary"><?php echo h($cart_in_message); ?></p> -->
                     <p class="text-primary"><?php echo h($finish_insert_message); ?></p>
                     <p class="text-primary"><?php echo h($select_message); ?></p>
                 </div>

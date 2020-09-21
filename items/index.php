@@ -166,6 +166,7 @@ if(!empty($_FILES['item_thumbnail']['name'])) {
                     </div>
                     <input type="submit" class="btn btn-large btn-block uploaded_btn" name="edit" value="更新する">
                 </form>
+                <a href="../items/item_destroy.php?item_id=<?php echo h($item_id); ?>" class="btn btn-block btn-large delete_btn">商品を削除する</a>
                 <?php endif; ?>
         </div>
         <!-- 商品画像追加 -->
@@ -175,7 +176,7 @@ if(!empty($_FILES['item_thumbnail']['name'])) {
     </div>
         </div>
         <?php include("../component/footer.php"); ?>
-    <script src="../assets/js/index.js"></script>
+        <script src="../assets/js/index.js"></script>
 </body>
 </html>
 

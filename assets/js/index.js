@@ -39,6 +39,7 @@ jsContainer.style.paddingBottom = footerHeight + "px";
 ========================================*/
 
 
+
 /*========================================
 ルーペ拡大部分の表示領域設定
 ========================================*/
@@ -109,7 +110,7 @@ Array.prototype.forEach.call(document.querySelectorAll('.zoom__lens__container')
         zoomImage.style.marginLeft = -(left * scale) + 'px';
         // zoomImage.style.marginTop = -(top * scale) + 'px';
     });
-})
+});
 /*==========================================================
 商品詳細ページのサムネイル画像にhoverした時にメインイメージを切り替える
 ==========================================================*/
@@ -125,6 +126,7 @@ thumbnails.forEach((thumbnail) => {
         mainImage.setAttribute('src', mainImageSrc);
     });
 })
+
 
 // jQuery
 $(function(){
