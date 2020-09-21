@@ -56,6 +56,7 @@ if(!$_SESSION["login"]) {
                     <li>メールアドレス : <?php echo h($user["email"]); ?></li>
                     <li>登録住所 : <?php echo h($user["address"]); ?></li>
                     <li><a href="../items/index.php" class="registered-item__link">商品登録する</a></li>
+                    <li><a href="../users/signout.php?user_id=<?php echo h($id); ?>" class="signout_link btn btn-block btn-large">退会する</a></li>
                 </ul>
             </div>
             

@@ -35,6 +35,7 @@ function h($str){
 </head>
 <body>
 <?php include("../component/header.php"); ?>
+<main>
     <div class="container">
         <div class="item-list__wrap">
         <!-- <div class="about-user">
@@ -56,6 +57,7 @@ function h($str){
             </ul>
         </div>
     </div>
+</main>
     <?php include("../component/footer.php"); ?>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.matchHeight/0.7.2/jquery.matchHeight-min.js" integrity="sha512-/bOVV1DV1AQXcypckRwsR9ThoCj7FqTV2/0Bm79bL3YSyLkVideFLE3MIZkq1u5t28ke1c0n31WYCOrO01dsUg==" crossorigin="anonymous"></script>

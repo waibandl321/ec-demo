@@ -668,10 +668,10 @@ input[type="file"]::-webkit-file-upload-button {
     margin-top: 30px;
     background-color: #2C88CB;
     color: #fff;
-    height: 40px;
+    /* height: 40px; */
     display: block;
-    line-height: 40px;
-    padding: 0 10px;
+    /* line-height: 40px; */
+    padding: 10px 0;
     text-align: center;
     border-radius: 5px;
 }
@@ -688,4 +688,26 @@ input[type="file"]::-webkit-file-upload-button {
     overflow: hidden;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
+}
+.delete_btn {
+    background-color: #db2d25;
+    color: #fff;
+    letter-spacing: 2px;
+    padding: 10px 0;
+    margin-top: 20px;
+}
+.uploaded_btn {
+    margin-top: 30px;
+}
+.delete_btn:hover,
+.signout_link:hover {
+    color: #fff;
+}
+.signout_link {
+    font-size: 18px;
+    background-color: #db2d25;
+    color: #fff;
+    letter-spacing: 2px;
+    padding: 10px 0;
+    margin-top: 20px;
 }
