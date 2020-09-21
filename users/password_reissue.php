@@ -8,7 +8,6 @@ function h($str){
     return htmlspecialchars($str, ENT_QUOTES, 'UTF-8');
 }
 
-
 /*=========================================
 ■パスワードの再発行のためにユーザにメールを送信する
 ========================================= */
@@ -85,7 +84,8 @@ if(isset($_POST["update"])){
     $update_data[] = $getPassResetToken;
     $stmt = $dbh->prepare($sql);
     $stmt->execute($update_data);
-    $update_password_success_msg = "パスワードの再設定が完了しました";
+    header('Location: ../users/login.php');
+
 }
 //パスワードが上書き保存されたらログインページへ遷移
 ?>
