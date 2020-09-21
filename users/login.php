@@ -70,6 +70,11 @@ $errors = [];
             </form>
         </div>
         <!-- ログインフォーム -->
+        <!-- パスワード再発行　パスワードを忘れた方用のページへ遷移 -->
+        <div class="register_link">
+            <a href="../users/password_reissue.php">パスワードをお忘れの方はこちら</a>
+        </div>
+        <!-- パスワード再発行 -->
         <!--　登録がまだの場合 -->
         <div class="register_link">
             <a href="../users/index.php">登録がまだの方はこちら</a>
