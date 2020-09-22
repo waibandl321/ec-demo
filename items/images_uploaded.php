@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once('../config/dbconnect.php');
+require_once('../config/functions.php');
 
 //SESSIONで保持したデータ
 $user = $_SESSION["user"];
@@ -14,11 +15,6 @@ $item_stock = $_SESSION['item_stock'];
 
 $errors = [];
 
-//悪意のあるスクリプトを入力されたときにXSSを防ぐための方法にhtmlspecialchars関数を使用
-//よく使用するため関数化
-function h($str){
-    return htmlspecialchars($str, ENT_QUOTES, 'UTF-8');
-}
 
 //item_idをselectする処理(全ての条件に合致したデータのみを取得)
 $sql = "SELECT item_id FROM items WHERE item_name = ? AND item_price = ? AND item_description = ? AND item_stock = ?";

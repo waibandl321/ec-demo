@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once('../config/dbconnect.php');
+require_once('../config/functions.php');
 
 if(!$_SESSION["login"]) {
     header('Location: ../users/login.php');
@@ -19,11 +20,6 @@ $item_price = $_POST['item_price'];
 $item_description = $_POST['item_description'];
 $item_stock = $_POST['item_stock'];
 
-//悪意のあるスクリプトを入力されたときにXSSを防ぐための方法にhtmlspecialchars関数を使用
-//よく使用するため関数化
-function h($str){
-    return htmlspecialchars($str, ENT_QUOTES, 'UTF-8');
-}
 
 //セッションに情報保持　=> 必要ない処理のためコメントアウト
 $_SESSION["item_name"] = $item_name;

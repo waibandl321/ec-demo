@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once('../config/dbconnect.php');
+require_once('../config/functions.php');
 
 //セッションで保持したuserデータ
 $user = $_SESSION["user"];
@@ -9,11 +10,6 @@ $user_id = $_SESSION["user"]["id"];
 $quantity = $_POST["quantity"];
 $item_id = $_POST["item_id"];
 
-//悪意のあるスクリプトを入力されたときにXSSを防ぐための方法にhtmlspecialchars関数を使用
-//よく使用するため関数化
-function h($str){
-    return htmlspecialchars($str, ENT_QUOTES, 'UTF-8');
-}
 
 //パラメーターに付与された商品ID(code)を取得 =>商品ID(code)に紐つく商品データを取得し、商品詳細情報のブロックに表示させる
 if(isset($_GET['code'])) {

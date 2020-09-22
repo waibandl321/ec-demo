@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once('../config/dbconnect.php');
+require_once('../config/functions.php');
 
 $errors = [];
 
@@ -10,11 +11,6 @@ $password = $_POST['password'];
 $address = $_POST['address'];
 $image_name = $_FILES['image']['name'];
 
-
-//悪意のあるスクリプトを入力されたときにXSSを防ぐための方法にhtmlspecialchars関数を使用
-function h($str){
-    return htmlspecialchars($str, ENT_QUOTES, 'UTF-8');
-}
 
 //アップ画像がfilesに入る
 if (!empty($_FILES['image']['name'])) {
