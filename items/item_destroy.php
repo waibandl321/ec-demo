@@ -19,7 +19,10 @@ if(isset($_GET['item_id'])) {
     $params = array(':item_id' => $item_id);
     // 削除するレコードのIDが入った変数をexecuteにセットしてSQLを実行
     $stmt->execute($params);
-    $delete_success_msg = "商品データを削除しました。5秒後にマイページに移動します。";
+    $delete_success_msg = "商品データを削除しました。";
+} else {
+    //削除に失敗した場合
+    $err_msg = "商品の削除に失敗しました。もう一度やり直してください。";
 }
 
 ?>
@@ -38,7 +41,13 @@ if(isset($_GET['item_id'])) {
 <?php include("../component/header.php"); ?>
   <main>
     <div class="container item_destroy">
+    <?php if(isset($_GET['item_id'])) : ?>
      <p><?php echo h($delete_success_msg); ?></p>
+     <a href="../users/mypage.php">マイページへ</a>
+     <?php else : ?>
+     <p><?php echo h($err_msg); ?></p>
+     <a href="../users/mypage.php">マイページへ</a>
+     <?php endif; ?>
      </div>
     </main>
     <?php include("../component/footer.php"); ?>
@@ -47,9 +56,9 @@ if(isset($_GET['item_id'])) {
     /*================================================
     商品を削除した後に指定秒数後にページマイページへ遷移する処理
     ==================================================*/
-    setTimeout(() => {
-        window.location.href = '../users/mypage.php';
-    }, 5000);
+    // setTimeout(() => {
+    //     window.location.href = '../users/mypage.php';
+    // }, 5000);
     
     </script>
 </body>

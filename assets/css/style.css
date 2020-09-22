@@ -13,7 +13,9 @@ a:hover {
     clear: both;
     content: "";
 }
-
+textarea {
+    resize: none;
+}
 /* 共通のコンポーネント */
 /* ヘッダー */
 header {
@@ -295,7 +297,6 @@ input[type="file"]::-webkit-file-upload-button {
     margin: 0 20px 0 0;
   }
   textarea {
-    resize: vertical;
     min-height: 500px;
     font-family: Consolas, 'Courier New', Courier, Monaco, monospace;
   }
