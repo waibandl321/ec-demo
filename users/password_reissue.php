@@ -52,7 +52,7 @@ if(isset($submit)) {
         $header = "From: $email\nReply-To: $email\n";
         //mb_send_mail()関数を使用してでメール送信
         mb_send_mail($to, $subject, $body, $header);
-        $mail_success_msg = "メールの送信が完了しました";
+        $mail_success_msg = "メールの送信が完了しました。メール(件名 : パスワード再発行)に記載されたURLから再設定をお願いいいたします。";
     } else {
         $err_msg = "データの取得に失敗しました";
     }
@@ -71,9 +71,19 @@ if(isset($getPassResetToken)) {
     $stmt->execute($reset_data);
     $reset_user_data = $stmt->fetch();
 }
+
+//トークンが存在しない場合はパスワード再発行ページのメールアドレス入力画面にリダイレクト
+if($getPassResetToken != $reset_user_data["pass_reset_token"]) {
+    //エラーメッセージ
+    $not_exist_token = "パスワードの再設定に必要なトークンが存在しませんでした。もう一度やり直してください。";
+    //リダイレクト
+    header('Location: ../users/password_reissue.php');
+}
+
 //リセットユーザーの情報が存在する場合にパスワードのアップデート処理
 $update_password = $_POST["update_password"];
-if(isset($_POST["update"])){
+//更新ボタンが押されて且、$reset_user_dataが存在する場合
+if(isset($_POST["update"]) && $reset_user_data){
     $sql = "UPDATE users SET password = ? WHERE pass_reset_token = ?";
     $update_data = [];
     //暗号化の強度を高める
@@ -81,10 +91,10 @@ if(isset($_POST["update"])){
     $update_data[] = $getPassResetToken;
     $stmt = $dbh->prepare($sql);
     $stmt->execute($update_data);
+    //パスワードが上書き保存されたらログインページへ遷移
     header('Location: ../users/login.php');
-
 }
-//パスワードが上書き保存されたらログインページへ遷移
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -109,10 +119,11 @@ if(isset($_POST["update"])){
             <p class="text-primary"><?php echo h($pupdate_password_success_msg); ?></p>
             <?php echo h($passResetToken); ?>
             <?php if(isset($reset_user_data)) : ?>
+        　　<p class="text-danger"><?php echo h($error_get_infomation); ?></p>
             <form action="" method="POST">
                 <div class="form-group">
                     <label for="email">新しいパスワードを入力してください。</label><br>
-                    <input type="password" name="update_password">
+                    <input type="password" name="update_password" required>
                 </div>
                 <div class="form-group">
                     <input type="submit" name="update">
@@ -122,7 +133,7 @@ if(isset($_POST["update"])){
             <form action="" method="POST">
                 <div class="form-group">
                     <label for="email">メールアドレスを入力してください。</label><br>
-                    <input type="email" name="email">
+                    <input type="email" name="email" required>
                 </div>
                 <div class="form-group">
                     <input type="submit" name="submit">
