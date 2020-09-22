@@ -88,7 +88,7 @@ $passResetUrl = "http://localhost:8000/users/password_reissue.php?passResetCode=
 => ユーザー情報が存在する場合にpassword再設定用のフォームを表示
 
 
-■ユーザーがpassword再設定用のformに新しいパスワードを入力して再設定処理
+■ユーザーがpassword再設定用のformに新しいパスワードを入力して再設定を行う
 => ユーザーの新しいパスワードを受け取ってデータベースのパスワードを更新
 => ログインページに遷移
 => 新しいパスワードを入力してログイン処理
