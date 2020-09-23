@@ -754,3 +754,8 @@ input[type="file"]::-webkit-file-upload-button {
 .sign_out__wrap input[type="submit"]:hover {
     opacity: .8;
 }
+
+/* passwordのリセットトークンが一致しない場合はformを非表示にする */
+.update_password.hide {
+    display: none;
+}

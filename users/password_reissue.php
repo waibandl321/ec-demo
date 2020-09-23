@@ -22,7 +22,6 @@ if(isset($submit)) {
     $user_id = $data["id"];
     //2. メールアドレスが登録されている場合
     if(!empty($data)) {
-        $err_msg = "データの取得に成功";
         //セキュリティ性の高いランダムな文字列を生成
         $passResetToken = sha1(uniqid(rand(), true));
         //パスワードリセットトークンをデータベースに保存
@@ -75,9 +74,7 @@ if(isset($getPassResetToken)) {
 //トークンが存在しない場合はパスワード再発行ページのメールアドレス入力画面にリダイレクト
 if($getPassResetToken != $reset_user_data["pass_reset_token"]) {
     //エラーメッセージ
-    $not_exist_token = "パスワードの再設定に必要なトークンが存在しませんでした。もう一度やり直してください。";
-    //リダイレクト
-    header('Location: ../users/password_reissue.php');
+    $not_exist_token = "パスワードの再設定に必要なトークンが存在しませんでした。もう一度やり直してください。(5秒後にメールアドレスの入力画面に戻ります)";
 }
 
 //リセットユーザーの情報が存在する場合にパスワードのアップデート処理
@@ -113,16 +110,11 @@ if(isset($_POST["update"]) && $reset_user_data){
     <div class="container">
         <div class="sign_out__wrap">
             <h4>パスワード再発行</h4>
-            <p class="text-danger"><?php echo h($err_msg); ?></p>
-            <p class="text-dark"><?php echo h($send_email); ?></p>
-            <p class="text-primary"><?php echo h($mail_success_msg); ?></p>
-            <p class="text-primary"><?php echo h($pupdate_password_success_msg); ?></p>
-            <?php echo h($passResetToken); ?>
             <?php if(isset($reset_user_data)) : ?>
-        　　<p class="text-danger"><?php echo h($error_get_infomation); ?></p>
-            <form action="" method="POST">
+        　　<p class="text-danger token_err_msg"><?php echo h($not_exist_token); ?></p>
+            <form action="" method="POST" class="update_password">
                 <div class="form-group">
-                    <label for="email">新しいパスワードを入力してください。</label><br>
+                    <label for="email">新しいパスワードを入力してください。</label>
                     <input type="password" name="update_password" required>
                 </div>
                 <div class="form-group">
@@ -145,5 +137,17 @@ if(isset($_POST["update"]) && $reset_user_data){
     </main>
     <?php include("../component/footer.php"); ?>
     <script src="../assets/js/index.js"></script>
+    <script>
+        const tokenErrMsg = document.querySelector('.token_err_msg');
+        const tokenErrMsgText = tokenErrMsg.textContent;
+        const updatePassword = document.querySelector('.update_password');
+        if(tokenErrMsgText) {
+            //フォームの表示切り替え
+            updatePassword.classList.add('hide');
+            setTimeout(() => {
+                window.location.href = "../users/password_reissue.php";
+            }, 5000)
+        }
+    </script>
 </body>
 </html>
