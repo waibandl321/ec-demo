@@ -10,11 +10,21 @@ function findUserByEmail($dbh, $email) {
     $stmt->execute($data);
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
-if (!empty($_POST)) { //dataの存在チェック
-    $user = findUserByEmail($dbh, $_POST["email"]); //findUserByEmail関数でemailを検索情報にしてusersテーブルから情報を取得
-    if (password_verify($_POST["password"], $user["password"])) { //password_verify関数でpasswordの検証 暗号化されたパスワードとuserが入力されたpassを比較
-        $_SESSION["login"] = true; //passwordの比較結果がtrue
-        $_SESSION["user"]  = $user; //user情報
+//dataの存在チェック
+if (!empty($_POST)) { 
+    //findUserByEmail関数でemailを検索情報にしてusersテーブルから情報を取得
+    $user = findUserByEmail($dbh, $_POST["email"]);
+    //ユーザーのステータスがfalseの場合はリダイレクト処理 + エラーメッセージを表示
+    if($user["status"] == 0) {
+        header('Location: ../users/login.php?info=not_exist_user');
+        exit;
+    }
+    //password_verify関数でpasswordの検証 暗号化されたパスワードとuserが入力されたpassを比較
+    if (password_verify($_POST["password"], $user["password"])) {
+        //passwordの比較結果がtrue
+        $_SESSION["login"] = true;
+        //user情報
+        $_SESSION["user"]  = $user;
         $id = $_SESSION["user"]["id"];
         header('Location: ../users/mypage.php');
         exit;
@@ -49,6 +59,18 @@ $errors = [];
         <?php endif ?>
         <!-- エラーチェック -->
 
+        <!-- 退会済みユーザーがアクセスしてきた場合の表示切り替え パラメーターに-not_exist_userが含まれている場合->
+        <?php if(isset($_GET["info"])) : ?>
+            <!-- 退会済みユーザーの場合に適切なエラーメッセージを表示 -->
+            <div class="not_exist_user">
+                <p class="text-danger not_exist_user_msg">ユーザーが存在しません。<br>
+                入力されたログイン情報が間違っているか、既に退会済みの可能性があります。</p>
+                <div class="register_link">
+                    <a href="../users/index.php">登録がまだの方はこちら</a>
+                    <a href="../users/login.php">もう一度ログインする</a>
+                </div>
+        </div>
+        <?php else : ?>
         <!-- ログインフォーム -->
         <div class="login">
             <form action="" method="POST">
@@ -69,12 +91,12 @@ $errors = [];
         <div class="register_link">
             <a href="../users/password_reissue.php">パスワードをお忘れの方はこちら</a>
         </div>
-        <!-- パスワード再発行 -->
         <!--　登録がまだの場合 -->
         <div class="register_link">
             <a href="../users/index.php">登録がまだの方はこちら</a>
         </div>
         <!--　登録がまだの場合 -->
+        <?php endif; ?>
     </div>
     </main>
     <?php include("../component/footer.php"); ?>

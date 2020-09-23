@@ -1,3 +1,4 @@
+/* 共通style */
 body {
     font-family: "メイリオ", sans-serif;
     background-color: #eef1f3;
@@ -16,7 +17,7 @@ a:hover {
 textarea {
     resize: none;
 }
-/* 共通のコンポーネント */
+
 /* ヘッダー */
 header {
     position: fixed;
@@ -140,6 +141,7 @@ header {
 main {
     min-height: calc(100vh - 60px);
 }
+
 /* フッター */
 footer {
     
@@ -182,6 +184,7 @@ footer {
     box-sizing: border-box;
     width: 30%;
 }
+
 /* 商品一覧 */
 .item-list {
     padding-left: 0;
@@ -257,6 +260,7 @@ footer {
     margin-top: 30px;
     width: 100%;
 }
+
 /* 商品登録　編集画面 */
 /* ドラッグアンドドロップ部分のスタイル */
 .form-control-file {
@@ -322,7 +326,8 @@ input[type="file"]::-webkit-file-upload-button {
     color: #fff;
     opacity: .8;
 }
-  /* 商品詳細ページのスタイル */
+
+  /* 商品詳細ページ */
 .item-detail__wrap {
       display: flex;
       flex-wrap: wrap;
@@ -600,9 +605,28 @@ input[type="file"]::-webkit-file-upload-button {
 .user-information__list li + li {
     margin-top: 10px;
 }
-.register_link {
-    margin-top: 30px;
+.not_exist_user > .register_link {
+    display: flex;
+    margin-top: 20px;
 }
+.not_exist_user > .register_link a {
+    background-color: #2C88CB;
+    color: #fff;
+    height: 40px;
+    display: block;
+    line-height: 40px;
+    padding: 0 10px;
+    text-align: center;
+    border-radius: 5px;
+}
+.not_exist_user > .register_link > a + a {
+    margin-left: 15px;
+}
+.register_link {
+    margin-top: 20px;
+}
+
+
 .registered-items__wrap {
     margin-top: 50px;
 }
@@ -758,4 +782,11 @@ input[type="file"]::-webkit-file-upload-button {
 /* passwordのリセットトークンが一致しない場合はformを非表示にする */
 .update_password.hide {
     display: none;
+}
+/* ログインページのエラ〜メッセージのスタイル */
+.not_exist_user_msg {
+    box-sizing: border-box;
+    border: 1px solid #222;
+    padding: 20px;
+    margin-top: 20px;
 }

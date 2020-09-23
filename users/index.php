@@ -10,7 +10,7 @@ $email = $_POST['email'];
 $password = $_POST['password'];
 $address = $_POST['address'];
 $image_name = $_FILES['image']['name'];
-
+$status = 1;
 
 //アップ画像がfilesに入る
 if (!empty($_FILES['image']['name'])) {
@@ -22,13 +22,14 @@ if (!empty($_FILES['image']['name'])) {
     move_uploaded_file($_FILES['image']['tmp_name'], $uploaded_file);
     //ファイルチェックが完了してtrueの場合はユーザー情報のinsert処理
     if(!empty($_POST)) {
-        $stmt = $dbh->prepare("insert into users(name, email, password, address, user_image) values (?, ?, ?, ?, ?)");
+        $stmt = $dbh->prepare("insert into users(name, email, password, address, user_image, status) values (?, ?, ?, ?, ?, ?)");
         $data = [];
         $data[] = $userName;
         $data[] = $email;
         $data[] = password_hash($password, PASSWORD_DEFAULT);//暗号化されたパスワードの中にsolt　solt = 暗号化の強度を高める
         $data[] = $address;
         $data[] = $image_name;
+        $data[] = $status;
         $stmt->execute($data);
         $login_link = 'ログインページへ';
         echo $data;

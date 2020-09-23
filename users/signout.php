@@ -4,17 +4,33 @@ require_once('../config/dbconnect.php');
 require_once('../config/functions.php');
 
 $user_id = $_GET["user_id"];
-//ユーザーとユーザーが登録している商品の削除処理
+
+//ステータスを退会(0)にするための変数
+$status = 0;
+//ユーザーが退会処理をした場合にデータベースにデータを保持したままでステータスを変更する
 if(isset($user_id)) {
-    $sql = "DELETE users, items FROM users LEFT JOIN items ON users.id = items.seller_id WHERE users.id = :id";
-    // 削除するレコードのIDは空のまま、SQL実行の準備をする
+    $sql = "UPDATE users SET status = ? WHERE id = ?";
+    $data = [];
+    $data[] = $status;
+    $data[] = $user_id;
     $stmt = $dbh->prepare($sql);
-    // 削除するレコードのIDを配列に格納する
-    $params = array(':id' => $user_id);
-    // 削除するレコードのIDが入った変数をexecuteにセットしてSQLを実行
-    $stmt->execute($params);
+    $stmt->execute($data);
     $message = "退会しました。5秒後にページを移動します。";
 }
+
+
+
+//ユーザーとユーザーが登録している商品の削除処理
+// if(isset($user_id)) {
+//     $sql = "DELETE users, items FROM users LEFT JOIN items ON users.id = items.seller_id WHERE users.id = :id";
+//     // 削除するレコードのIDは空のまま、SQL実行の準備をする
+//     $stmt = $dbh->prepare($sql);
+//     // 削除するレコードのIDを配列に格納する
+//     $params = array(':id' => $user_id);
+//     // 削除するレコードのIDが入った変数をexecuteにセットしてSQLを実行
+//     $stmt->execute($params);
+//     $message = "退会しました。5秒後にページを移動します。";
+// }
 session_destroy();
 ?>
 <!DOCTYPE html>
@@ -33,15 +49,19 @@ session_destroy();
   <main>
     <div class="container sign_out">
      <h2>退会ページ</h2>
-     <p><?php echo h($message); ?></p>
+     <p class="sign_out_msg"><?php echo h($message); ?></p>
      </div>
     </main>
     <?php include("../component/footer.php"); ?>
     <script src="../assets/js/index.js"></script>
     <script>
-        setTimeout(() => {
+        const signOutMsg = document.querySelector('.sign_out_msg');
+        const signOutMsgText = signOutMsg.textContent;
+        if(signOutMsgText) {
+            setTimeout(() => {
             window.location.href = "../items/item_list.php";
         }, 3000);
+        }
     </script>
 </body>
 </html>
