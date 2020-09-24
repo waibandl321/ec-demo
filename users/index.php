@@ -10,33 +10,42 @@ $email = $_POST['email'];
 $password = $_POST['password'];
 $address = $_POST['address'];
 $image_name = $_FILES['image']['name'];
+
 $status = 1;
 
-//アップ画像がfilesに入る
+//ファイルを判定し、指定した拡張子であれば登録処理
 if (!empty($_FILES['image']['name'])) {
-    //ディレクトリの設定
-    $upload_dir = '../users/images/';
-    //パスの作成 basename関数でファイル名だけ取得する + [name]に格納する （一次領域）
-    $uploaded_file = $upload_dir . basename($_FILES['image']['name']);
-    //move_uploaded_file関数で指定ディレクトリにファイルをアップロード
-    move_uploaded_file($_FILES['image']['tmp_name'], $uploaded_file);
-    //ファイルチェックが完了してtrueの場合はユーザー情報のinsert処理
-    if(!empty($_POST)) {
-        $stmt = $dbh->prepare("insert into users(name, email, password, address, user_image, status) values (?, ?, ?, ?, ?, ?)");
-        $data = [];
-        $data[] = $userName;
-        $data[] = $email;
-        $data[] = password_hash($password, PASSWORD_DEFAULT);//暗号化されたパスワードの中にsolt　solt = 暗号化の強度を高める
-        $data[] = $address;
-        $data[] = $image_name;
-        $data[] = $status;
-        $stmt->execute($data);
-        $login_link = 'ログインページへ';
-        echo $data;
-        $message = '登録に成功しました!';
-    } else {
-        $message = 'ユーザー情報を入力してください';
-    }
+    //ファイルタイプを判定
+    if ($_FILES['image']['type'] === 'image/jpg' ||
+        $_FILES['image']['type'] === 'image/jpeg' ||
+        $_FILES['image']['type'] === 'image/png' ||
+        $_FILES['image']['type'] === 'image/svg' ||
+        $_FILES['image']['type'] === 'image/webp' ||
+        $_FILES['image']['type'] === 'image/gif') {
+            //ディレクトリの設定
+            $upload_dir = '../users/images/';
+            //パスの作成 basename関数でファイル名だけ取得する + [name]に格納する （一次領域）
+            $uploaded_file = $upload_dir . basename($_FILES['image']['name']);
+            //move_uploaded_file関数で指定ディレクトリにファイルをアップロード
+            move_uploaded_file($_FILES['image']['tmp_name'], $uploaded_file);
+            //ユーザー情報のinsert処理
+            if(!empty($_POST)) {
+                $stmt = $dbh->prepare("insert into users(name, email, password, address, user_image, status) values (?, ?, ?, ?, ?, ?)");
+                $data = [];
+                $data[] = $userName;
+                $data[] = $email;
+                $data[] = password_hash($password, PASSWORD_DEFAULT);//暗号化されたパスワードの中にsolt　solt = 暗号化の強度を高める
+                $data[] = $address;
+                $data[] = $image_name;
+                $data[] = $status;
+                $stmt->execute($data);
+                $login_link = 'ログインページへ';
+                echo $data;
+                $message = '登録に成功しました!';
+            } else {
+                $message = 'ユーザー情報を入力してください';
+            }
+        }
 }
 
 
@@ -58,7 +67,7 @@ if (!empty($_FILES['image']['name'])) {
     <div class="container">
         <div class="user-registration">
             <h2 class="page__title">ユーザー登録</h2>
-            <p class="text-danger font-weight-bold"><?php echo h($message); ?></p>
+            <p class="text-primary"><?php echo h($message); ?></p>
             <form method="POST" action="./index.php" enctype="multipart/form-data">
             <div class="form-group">
                     <label for="name"">名前</label>
