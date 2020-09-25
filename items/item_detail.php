@@ -63,6 +63,10 @@ if(isset($cart_quantity)) {
         $stmt->execute();
     }
 } elseif(isset($_POST["cart_in"])) {
+    //ログインユーザーが存在しない場合はログインページにリダイレクト
+    if(!isset($_SESSION["user"])) {
+        header('Location: ../users/login.php');
+    }
     //insertされたことを確認するための<input type="hidden" name="finish_insert">からPOSTされたデータを取得
     $finish_insert = $_POST["finish_insert"];
      //同じ商品がカートに存在しない場合の処理 cartテーブルへのinsert
