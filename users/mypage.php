@@ -84,5 +84,12 @@ if(!$_SESSION["login"]) {
 <!-- <script src="../assets/js/elevatezoom-master/jquery.elevatezoom.js"></script> -->
 <!-- <script src="../assets/js/drift/Drift.min.js"></script> -->
 <script src="../assets/js/index.js"></script>
+<script>
+    // jQuery
+    $(function(){
+        $('.js-registered-item').matchHeight();
+    
+    });
+</script>
 </body>
 </html>
