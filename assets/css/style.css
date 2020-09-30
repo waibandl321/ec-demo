@@ -3,11 +3,15 @@ body {
     font-family: "メイリオ", sans-serif;
     background-color: #eef1f3;
 }
+a {
+    color: #2C88CB;
+}
 a:hover {
-    text-decoration: none;
     opacity: .7;
     transition: .3s;
-    color: inherit;
+}
+a:link, a:visited, a:hover, a:active {
+    text-decoration: none!important;
 }
 .clearfix::after {
     display: block;
@@ -44,6 +48,14 @@ header {
     padding: 5px;
     border: 1px solid #fff;
 }
+.header-top__menu-icon a {
+    color: #fff;
+}
+.header-top__menu-icon a:hover {
+    opacity: .8;
+    text-decoration: none;
+    color: #fff;
+}
 .header-top__menu-icon:hover {
     opacity: .7;
     transition: .3s;
@@ -62,6 +74,10 @@ header {
     display: flex;
     align-items: center;
 }
+.header-top__cart-link {
+    display: flex;
+    align-items: center;
+}
 .header-top__link + .header-top__link {
     margin-left: 30px;
 }
@@ -70,6 +86,9 @@ header {
     margin-bottom: 0;
 }
 .header-top__item_list a {
+    color: #fff;
+}
+.header-top__item_list a:hover {
     color: #fff;
 }
 .header-top__account-information a {
@@ -236,6 +255,68 @@ footer {
     background: #2C88CB;
     color: #fff;
     padding: 0 10px;
+}
+/* paginationのスタイル */
+.pagination_outer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.pagination_inner {
+    padding: 0 10px;
+}
+.pagination_inner li {
+    list-style: none;
+    float: left;
+    padding: 0 5px;
+}
+.pagination_inner li a {
+    color: #2C88CB;
+}
+
+.pagination_inner li + li {
+    margin-left: 10px;
+}
+.pagination_prev_btn button, 
+.pagination_next_btn button {
+    outline: none;
+    border: none;
+    background: #2C88CB;
+    color: #fff;
+    border-radius: 5px;
+    font-size: 20px;
+    width: 30px;
+    height: 40px;
+    line-height: 40px;
+    padding: 0;
+    /* padding: 0; */
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+.pagination_prev_btn button::before,
+.pagination_next_btn button::before {
+    position: absolute;
+    content: "";
+    box-sizing: border-box;
+    width: 8px;
+    height: 8px;
+    border: 8px solid transparent;
+}
+.pagination_prev_btn button::before {
+    border-right: 8px solid #fff;
+    top: 50%;
+    left: 50%;
+    transform: translateY(-50%) translateX(-80%);
+}
+.pagination_next_btn button::before {
+    border-left: 8px solid #fff;
+    top: 50%;
+    left: 50%;
+    transform: translateY(-50%) translateX(-20%);
+    
 }
 @media(max-width: 1050px) {
     .item-detail {
@@ -487,6 +568,105 @@ input[type="file"]::-webkit-file-upload-button {
 }
 .other-image__item img {
     width: 100%
+}
+.comments_and_review__inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+.post_reviews_link,
+.view_reviews_link {
+    margin-bottom: 0;
+}
+.post_reviews_link {
+    cursor: pointer;
+}
+.post_reviews_link:hover,
+.view_reviews_link:hover {
+    opacity: .8;
+}
+.view_reviews_link {
+    cursor: pointer;
+    padding-right: 20px;
+}
+ /* レビューが存在する場合にのみリンクを表示させる */
+.view_reviews_link p {
+    position: relative;
+    visibility: hidden;
+}
+.view_reviews_link p.active {
+    visibility: visible;
+}
+.view_reviews_link p::after {
+    content: " ";
+    border-style: solid;
+    border-color:  #333 transparent transparent transparent;
+    border-width: 8px ;
+    position: absolute;
+    position: absolute;
+    transform: translateY(50%);
+    height: 0px;
+    width: 0px;
+}
+.post_reviews,
+.view_reviews{
+    display: none;
+}
+.post_reviews.active {
+    display: block;
+}
+.post_reviews {
+    margin-top: 20px;
+    max-width: 600px;
+    width: 100%;
+}
+.view_reviews.active {
+    display: block;
+}
+.review_form input,
+.review_form textarea {
+    width: 100%;
+}
+.review_form textarea {
+    min-height: 150px;
+}
+.form-group.submit {
+    margin-top: 20px;
+}
+.form-group.submit input[type="submit"] {
+    background: #2C88CB;
+    color: #fff;
+    padding: 10px 0;
+    text-align: center;
+    display: block;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+}
+.view_reviews__list {
+    margin-top: 20px;
+    padding: 0;
+}
+/* 商品詳細ページのレビュー蘭の高さが300pxを超えたときにスクロールさせる scrollクラスを付与 */
+.view_reviews__list.scroll {
+    overflow-y: scroll;
+    height: 300px;
+}
+.view_reviews__item {
+    list-style: none;
+}
+.post_item {
+    border: 1px dashed #bbb;
+    border-radius: 5px;
+    padding: 10px;
+    background-color: #fff;
+}
+.post_name {
+    font-size: 16px;
+    font-weight: bold;
+}
+.post_item_desc {
+    margin: 0;
 }
 @media(max-width: 768px) {
     .item-detail__wrap {

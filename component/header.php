@@ -12,13 +12,14 @@ $id = $_SESSION["user"]["id"];
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
-    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="http://waibandl321.xsrv.jp/ec/assets/css/style.css">
 </head>
 <body>
 <header>
     <div class="header-top">
         <div class="header-top__menu-icon">
-        <i class="fas fa-bars"></i>
+        <a href="http://waibandl321.xsrv.jp/ec/index.php">ECサイト</a>
+        <!-- <i class="fas fa-bars"></i> -->
         </div>
         <!-- <div class="header-top__logo">
             <a href="../users/index.php"><img src="../images/logo.jpg" alt="ロゴ画像"></a>
@@ -33,24 +34,24 @@ $id = $_SESSION["user"]["id"];
         </div> -->
         <div class="header-top__links">
             <div class="header-top__item_list header-top__link">
-                <a href="../items/item_list.php">商品一覧</a>
+                <a href="http://waibandl321.xsrv.jp/ec/items/item_list.php">商品一覧</a>
             </div>
             <div class="header-top__account-information header-top__link">
-                <a href="../users/mypage.php">マイページ</a>
+                <a href="http://waibandl321.xsrv.jp/ec/users/mypage.php">マイページ</a>
             </div>
             <?php if(!$_SESSION["login"]) : ?>
             <div class="header-top__account-information header-top__link">
-                <a href="../users/login.php">ログイン</a>
+                <a href="http://waibandl321.xsrv.jp/ec/users/login.php">ログイン</a>
             </div>
             <div class="header-top__account-information header-top__link">
-                <a href="../users/index.php">ユーザー新規登録</a>
+                <a href="http://waibandl321.xsrv.jp/ec/users/index.php">ユーザー新規登録</a>
             </div>
             <?php else : ?>
             <div class="header-top__account-information header-top__link">
-                <a href="../users/logout.php">ログアウト</a>
+                <a href="http://waibandl321.xsrv.jp/ec/users/logout.php">ログアウト</a>
             </div>
             <?php endif; ?>
-            <a class="header-top__cart-link header-top__link" href="../users/cart.php">
+            <a class="header-top__cart-link header-top__link" href="http://waibandl321.xsrv.jp/ec/users/cart.php">
                 <i class="fas fa-cart-plus"></i>カート
             </a>
         </div>

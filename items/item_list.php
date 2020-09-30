@@ -57,6 +57,26 @@ if(!$_SESSION["login"]) {
     <?php include("../component/footer.php"); ?>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.matchHeight/0.7.2/jquery.matchHeight-min.js" integrity="sha512-/bOVV1DV1AQXcypckRwsR9ThoCj7FqTV2/0Bm79bL3YSyLkVideFLE3MIZkq1u5t28ke1c0n31WYCOrO01dsUg==" crossorigin="anonymous"></script>
+    <script src="../assets/js/jquery.pagination.js"></script>
     <script src="../assets/js/index.js"></script>
+    <script>
+        // jQuery
+        $(function(){
+            $('.js-item-detail').matchHeight();
+            // 商品一覧のページネーション機能 jquery.pagination.jsを使用
+            $('.item-list').pagination({
+                itemElement : '> .js-item-detail',
+                displayItemCount: 8,
+                pageNumberClassName: "pagination_number",
+                nextBtnClassName: "pagination_next_btn",
+                prevBtnClassName: "pagination_prev_btn",
+                paginationInnerClassName: "pagination_inner",
+                paginationClassName: "pagination_outer",
+                prevBtnText: "",
+                nextBtnText: "",
+            })
+        
+        });
+    </script>
 </body>
 </html>

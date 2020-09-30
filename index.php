@@ -1,3 +1,8 @@
+<?php
+session_start();
+require_once('../ec/config/dbconnect.php');
+require_once('../ec/config/functions.php');
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,23 +11,24 @@
     <title>トップページ</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
-    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../ec/assets/css/style.css">
     
 </head>
 <body>
-<?php include("./component/header.php"); ?>
+<?php include("../ec/component/header.php"); ?>
   <main>
     <div class="container">
      <h1>トップページです</h1>
+     <p><?php echo h($db_success_message); ?></p>
         <ul>
-            <li><a href="../users/index.php">ユーザー登録</a></li>
-            <li><a href="../users/login.php">ログイン</a></li>
-            <li><a href="../items/index.php">商品登録</a></li>
-            <li><a href="../items/item_list.php">商品一覧</a></li>
+            <li><a href="../ec/users/index.php">ユーザー登録</a></li>
+            <li><a href="../ec/users/login.php">ログイン</a></li>
+            <li><a href="../ec/items/index.php">商品登録</a></li>
+            <li><a href="../ec/items/item_list.php">商品一覧</a></li>
         </ul>
      </div>
     </main>
-    <?php include("./component/footer.php"); ?>
-    <script src="../assets/js/index.js"></script>
+    <?php include("../ec/component/footer.php"); ?>
+    <script src="../ec/assets/js/index.js"></script>
 </body>
 </html>

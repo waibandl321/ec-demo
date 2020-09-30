@@ -34,7 +34,7 @@ if(isset($submit)) {
             $stmt->execute($token_data);
         }
         //生成した文字列をURLのパラメーターとして設定
-        $passResetUrl = "http://localhost:8000/users/password_reissue.php?passResetCode=$passResetToken";
+        $passResetUrl = "http://waibandl321.xsrv.jp/ec/users/password_reissue.php?passResetCode=$passResetToken";
         //生成したurlを記載したメールをユーザーに送信する処理
         //言語設定
         mb_language("Japanese");

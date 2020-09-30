@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body>
-    <footer>
+    <footer class="footer">
         <div class="footer-top">
             <a href="#" class="back-top-top__link">Back to top</a>
         </div>
