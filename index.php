@@ -1,3 +1,14 @@
+<?php
+session_start();
+require_once('./config/dbconnect.php');
+require_once('./config/functions.php');
+
+if($_SERVER["REQUEST_METHOD"] == "POST") {
+    if(empty($_POST["check_data"])) {
+        $err_msg = "エラー発生";
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,7 +31,14 @@
             <li><a href="../items/index.php">商品登録</a></li>
             <li><a href="../items/item_list.php">商品一覧</a></li>
         </ul>
-     </div>
+        <!-- フォームバリデーションのチェック -->
+        <form method="POST" name="check_form">
+            送信データ<br />
+            <p><?php echo h($err_msg); ?></p>
+            <input type="text" name="check_data" value="" /><br /><br />
+            <input type="submit" value="送信" name="submit" />
+        </form>
+    </div>
     </main>
     <?php include("./component/footer.php"); ?>
     <script src="../assets/js/index.js"></script>

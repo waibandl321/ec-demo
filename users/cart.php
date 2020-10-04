@@ -6,14 +6,12 @@ require_once('../config/functions.php');
 $user = $_SESSION["user"];
 $user_id = $_SESSION["user"]["id"];
 
-
 // ログインしていない場合は、ログインリンクを表示する
 if(!$user) {
     header('Location: ../users/login.php');
     exit;
 } else {
     //ログインユーザーに紐づく商品情報をCartテーブルから取得
-    $message = "ログアウト";
     $sql = "SELECT * FROM cart WHERE user_id = :user_id";
     $stmt = $dbh->prepare($sql);
     //指定された変数名にパラメータをバインドする
@@ -21,36 +19,41 @@ if(!$user) {
     $stmt->execute();
     $cart_items = $stmt->fetchAll();
 }
-//カートに追加された個数を取得
-foreach($cart_items as $cart_item) {
-    //数量を取得
-    var_dump($cart_item["quantity"]);
+
+// カート内にデータが存在するかを条件分岐チェック => 表示処理
+if(isset($cart_items)) {
+    //カートに表示されるアイテムを個別に取得
+    $items = [];
+    for($i = 0; $i < count($cart_items); $i++) {
+        $data = $cart_items[$i]["item_id"];
+        //テーブル結合と複数条件の指定により、items.item_id cart.item_id cart.user_idに合致するデータを取得
+        $sql = "SELECT * FROM items JOIN cart ON items.item_id = :data AND cart.item_id = :data AND cart.user_id = :user_id";
+        $stmt = $dbh->prepare($sql);
+        //指定された変数名にパラメータをバインドする
+        $stmt->bindParam(':data', $data, PDO::PARAM_INT);
+        $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+        $stmt->execute();
+        $items[] = $stmt->fetch();
+        //対象の値(item_id)が単数形の場合はfetch() 複数形の場合はfetchAll() 単数形の処理の時にfetchAll()を使うと正常に取得ができない
+        //合計金額の計算
+        foreach($items as $item) {
+            $a = floor($item["item_price"] * $item["quantity"] * 1.10); //floorで小数点切り捨て
+            $sum += $a;
+            $_SESSION["items"] = $items;
+        }
+    }
 }
 
-//カートに表示されるアイテムを個別に取得
-$items = [];
-for($i = 0; $i < count($cart_items); $i++) {
-    $data = $cart_items[$i]["item_id"];
-    //テーブル結合と複数条件の指定により、items.item_id cart.item_id cart.user_idに合致するデータを取得
-    // $sql = "SELECT * FROM items JOIN cart ON items.item_id = $data AND cart.item_id = $data AND cart.user_id = $user_id";
-    $sql = "SELECT * FROM items JOIN cart ON items.item_id = :data AND cart.item_id = :data AND cart.user_id = :user_id";
+// カートの削除処理
+if(isset($_POST["delete_item"])) {
+    $delete_item_id = $_POST["item_id"];
+    $sql = "DELETE FROM cart WHERE item_id = ?";
     $stmt = $dbh->prepare($sql);
-    //指定された変数名にパラメータをバインドする
-    $stmt->bindParam(':data', $data, PDO::PARAM_INT);
-    $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
-    $stmt->execute();
-    $items[] = $stmt->fetch();
-    //対象の値(item_id)が単数形の場合はfetch() 複数形の場合はfetchAll() 単数形の処理の時にfetchAll()を使うと正常に取得ができない
+    $data = [];
+    $data[] = $delete_item_id;
+    $stmt->execute($data);
+    header('Location: ../users/cart.php');
 }
-
-//合計金額の計算
-foreach($items as $item) {
-    $a = floor($item["item_price"] * $item["quantity"] * 1.10); //floorで小数点切り捨て
-    $sum += $a;
-    $_SESSION["items"] = $items;
-}
-
-
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -65,32 +68,39 @@ foreach($items as $item) {
 <?php include("../component/header.php"); ?>
 <main>
     <div class="container">
-        <!-- <div class="about-user clearfix">
-            <p class="about-user__item">現在ログイン中のユーザー : <?php echo h($user_id); ?></p>
-        </div> -->
         <div class="cart">
          <div class="cart-items">
             <h2>SHOPPING CART</h2>
             <div class="cart-items__inner">
-                <?php foreach($_SESSION["items"] as $item) : ?>
+                <?php if(!empty($cart_items)) :  ?>
+                <?php foreach($items as $item) : ?>
                     <div class="cart-item">
                         <div class="cart-item__image">
+                        <a href="../items/item_detail.php?code=<?php echo h($item["item_id"]); ?>">
                             <img src="../items/images/<?php echo h($item["item_thumbnail"]); ?>" alt="商品画像">
+                        </a>
                         </div>
                         <div class="cart-item__infomation">
                             <!-- 小計 = 商品価格(税込) * 数量 -->
                             <p class="sum-price__individual">小計 : <?php echo h(floor($item["item_price"]) * 1.10) * $item["quantity"]; ?>円(税込)</p>
-                            <p>商品ID : <?php echo h($item["item_id"]); ?></p>
                             <p><a href="../items/item_detail.php?code=<?php echo h($item["item_id"]); ?>"><?php echo h($item["item_name"]); ?></a></p>
                             <p>単品価格 : <?php echo h(floor($item["item_price"]) * 1.10); ?></p>
                             <p>数量 : <?php echo h($item["quantity"]); ?></p>
                             <p class="item-detail__description">商品説明 : <?php echo h($item["item_description"]); ?></p>
+                            <form method="POST">
+                                <input type="hidden" value="<?php echo h($item["item_id"]); ?>" name="item_id">
+                                <button type="submit" name="delete_item" class="cart_delete_button">カートから削除</button>
+                            </form>
                         </div>
                     </div>
                 <?php endforeach;?>
                 <div class="cart-item__sum">お支払い合計金額 : <?php echo h($sum); ?>円(税込)</div>
+                <?php else : ?>
+                <p>カート内に商品がありません。</p>
+                <?php endif; ?>
             </div>
           </div>
+          <?php if(!empty($cart_items)) :  ?>
           <aside class="checkout-link">
             <div class="total__price">
              <p class="cart-item__sum__aside">お支払い合計金額 : <?php echo h($sum); ?>円(税込)</p>
@@ -99,6 +109,7 @@ foreach($items as $item) {
                 <a href="">決済画面へ</a>
             </div>
           </aside>
+          <?php endif; ?>
         </div>
     </div>
     </main>

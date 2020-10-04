@@ -10,6 +10,40 @@ $user_id = $_SESSION["user"]["id"];
 $quantity = $_POST["quantity"];
 $item_id = $_POST["item_id"];
 
+//同じ商品がカート内に存在する場合の処理
+if(isset($cart_quantity)) {
+    if($_POST["count_updated_method"]){
+        $add_quantity = $_POST["update_quantity"];
+        $sum_quantity = $cart_quantity + $add_quantity;
+        $sql = "UPDATE cart SET quantity = :sum_quantity WHERE item_id = :item_id AND user_id = :user_id";
+        $stmt = $dbh->prepare($sql);
+        //指定された変数名にパラメータをバインドする
+        $stmt->bindParam(':sum_quantity', $sum_quantity, PDO::PARAM_INT);
+        $stmt->bindParam(':item_id', $id, PDO::PARAM_INT);
+        $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+        $stmt->execute();
+    }
+} elseif(isset($_POST["cart_in"])) {
+    //ログインユーザーが存在しない場合はログインページにリダイレクト
+    if(!isset($_SESSION["user"])) {
+        header('Location: ../users/login.php');
+    }
+    //insertされたことを確認するための<input type="hidden" name="finish_insert">からPOSTされたデータを取得
+    $finish_insert = $_POST["finish_insert"];
+     //同じ商品がカートに存在しない場合の処理 cartテーブルへのinsert
+     $stmt = $dbh->prepare("INSERT INTO cart(user_id, item_id, quantity) VALUES (?, ?, ?)");
+     $data = [];
+     $data[] = $user_id;
+     $data[] = $item_id;
+     $data[] = $quantity;
+     $stmt->execute($data);
+     //insertが完了したら処理を終了するためにheader関数で同じページに飛ばして、cartテーブルから商品情報の取得が完了した状態にする
+     header("Location: ../users/cart.php");
+} else {
+    //cartに紐付く商品がなく、cartテーブルにinsertもされていない状態の処理
+    $cart_in_message = '商品をカートに追加してください';
+}
+
 //パラメータの値を取得
 $code = $_GET['code'];
 //パラメーターに付与された商品ID(code)を取得 =>商品ID(code)に紐つく商品データを取得し、商品詳細情報のブロックに表示させる
@@ -47,40 +81,7 @@ if(isset($_GET['code'])) {
     }
 }
 
-//同じ商品がカート内に存在する場合の処理
-if(isset($cart_quantity)) {
-    $same_item_message = "同じアイテムがカート内に存在しています";
-    if($_POST["count_updated_method"]){
-        $add_quantity = $_POST["update_quantity"];
-        $sum_quantity = $cart_quantity + $add_quantity;
-        $sql = "UPDATE cart SET quantity = :sum_quantity WHERE item_id = :item_id AND user_id = :user_id";
-        $stmt = $dbh->prepare($sql);
-        //指定された変数名にパラメータをバインドする
-        $stmt->bindParam(':sum_quantity', $sum_quantity, PDO::PARAM_INT);
-        $stmt->bindParam(':item_id', $id, PDO::PARAM_INT);
-        $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
-        $stmt->execute();
-    }
-} elseif(isset($_POST["cart_in"])) {
-    //ログインユーザーが存在しない場合はログインページにリダイレクト
-    if(!isset($_SESSION["user"])) {
-        header('Location: ../users/login.php');
-    }
-    //insertされたことを確認するための<input type="hidden" name="finish_insert">からPOSTされたデータを取得
-    $finish_insert = $_POST["finish_insert"];
-     //同じ商品がカートに存在しない場合の処理 cartテーブルへのinsert
-     $stmt = $dbh->prepare("INSERT INTO cart(user_id, item_id, quantity) VALUES (?, ?, ?)");
-     $data = [];
-     $data[] = $user_id;
-     $data[] = $item_id;
-     $data[] = $quantity;
-     $stmt->execute($data);
-     //insertが完了したら処理を終了するためにheader関数で同じページに飛ばして、cartテーブルから商品情報の取得が完了した状態にする
-     header("Location: ../items/item_detail.php?code={$item_id}");
-} else {
-    //cartに紐付く商品がなく、cartテーブルにinsertもされていない状態の処理
-    $cart_in_message = '商品をカートに追加してください';
-}
+
 
 // 商品にレビューが投稿された際の処理
 $post_content = $_POST["post_content"];
@@ -122,8 +123,9 @@ if(isset($_GET['code'])) {
     <div class="container">
         <div class="item-page">
             <h2>商品ページ</h2>
-            <p class="text-primary font-weight-bold"><?php echo h($message); ?></p>
-            <p class="text-primary font-weight-bold"><?php echo h($same_item_message); ?></p>
+            <?php if(isset($cart_quantity)) : ?>
+            <p>こちらの商品はお客様のカートに<?php echo h($cart_quantity); ?>個入っています。</p>
+            <?php endif; ?>
             <?php foreach((array)$item_info as $item) : ?>
                 <div class="item-detail__wrap">
                     <div class="item-detail__images">
@@ -259,7 +261,7 @@ if(isset($_GET['code'])) {
         const zoomArea = document.querySelector('.zoom__area');
         const zoomImage = zoomArea.querySelector('img');
         var size = 200;
-        var scale = 400 / size;
+        var scale = 2;
 
         Array.prototype.forEach.call(document.querySelectorAll('.zoom__lens__container'), (container) => {
             console.log(container);
@@ -275,6 +277,8 @@ if(isset($_GET['code'])) {
                 zoomImage.setAttribute('src', image.src);
                 //offsetWidthで要素のレイアウト幅を整数として返し、scale値を乗算してzoom比率を算出
                 zoomImage.style.width = (image.offsetWidth * scale) + 'px';
+                // 同時に高さも指定
+                zoomImage.style.height = (image.offsetWidth * scale) + 'px';
             });
             // マウスが離れた時にzoomエリアを非表示にする
             container.addEventListener('mouseleave', () => {
@@ -321,7 +325,7 @@ if(isset($_GET['code'])) {
                 lens.style.top = top + 'px';
                 lens.style.left = left + 'px';
                 zoomImage.style.marginLeft = -(left * scale) + 'px';
-                // zoomImage.style.marginTop = -(top * scale) + 'px';
+                zoomImage.style.marginTop = -(top * scale) + 'px';
             });
         });
 

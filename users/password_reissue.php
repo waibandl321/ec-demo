@@ -34,7 +34,7 @@ if(isset($submit)) {
             $stmt->execute($token_data);
         }
         //生成した文字列をURLのパラメーターとして設定
-        $passResetUrl = "http://localhost:8000/users/password_reissue.php?passResetCode=$passResetToken";
+        $passResetUrl = "http://localhost:3000/users/password_reissue.php?passResetCode=$passResetToken";
         //生成したurlを記載したメールをユーザーに送信する処理
         //言語設定
         mb_language("Japanese");
@@ -51,9 +51,16 @@ if(isset($submit)) {
         $header = "From: $email\nReply-To: $email\n";
         //mb_send_mail()関数を使用してでメール送信
         mb_send_mail($to, $subject, $body, $header);
-        $mail_success_msg = "メールの送信が完了しました。メール(件名 : パスワード再発行)に記載されたURLから再設定をお願いいいたします。";
+        echo '<script>
+            alert("パスワード再設定メールを送信しました。メールに記載されたURLから再設定を行ってください。");
+            window.location.href = "../items/item_list.php";
+        </script>';
     } else {
-        $err_msg = "データの取得に失敗しました";
+        echo '
+        <script>
+            alert("入力されたメールアドレスが確認できませんでした。もう一度入力してください。ユーザー登録をされていない場合には登録をお願いいたします。");
+            window.location.href = "../users/login.php";
+        </script>';
     }
 }
 
@@ -88,8 +95,11 @@ if(isset($_POST["update"]) && $reset_user_data){
     $update_data[] = $getPassResetToken;
     $stmt = $dbh->prepare($sql);
     $stmt->execute($update_data);
-    //パスワードが上書き保存されたらログインページへ遷移
-    header('Location: ../users/login.php');
+    //パスワードが上書き保存されたらアラートを表示してログインページへ遷移
+    echo '<script>
+            alert("パスワードの再設定が完了しました。新しいパスワードでログインを行ってください。");
+            window.location.href = "../users/login.php";
+        </script>';
 }
 
 ?>
@@ -122,6 +132,7 @@ if(isset($_POST["update"]) && $reset_user_data){
                 </div>
             </form>
             <?php else : ?>
+            <script><?php echo h($send_email_alert); ?></script>
             <form action="" method="POST">
                 <div class="form-group">
                     <label for="email">メールアドレスを入力してください。</label><br>

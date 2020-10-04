@@ -3,11 +3,6 @@ session_start();
 require_once('../config/dbconnect.php');
 require_once('../config/functions.php');
 
-$sql = "SELECT * FROM items";
-$stmt = $dbh->prepare($sql);
-$stmt->execute();
-$items = $stmt->fetchAll();
-
 $user = $_SESSION["user"];
 $id = $_SESSION["user"]["id"];
 
@@ -17,6 +12,22 @@ if(!$_SESSION["login"]) {
 } else {
     $message = "ログアウトする";
 }
+// アクティブユーザーの登録商品のみ取得
+$sql = "SELECT * FROM items JOIN users ON items.seller_id = users.id AND users.status = 1";
+$stmt = $dbh->prepare($sql);
+$stmt->execute();
+$items = $stmt->fetchAll();
+
+for($i = 0; $i < count($items); $i++) {
+    if(isset($items[$i]["item_thumbnail"])) {
+        $item_thumbnail[$i] = $items[$i]["item_thumbnail"];
+    } else {
+        $no_image = "no_image";
+    }
+}
+
+
+
 
 
 ?>
@@ -34,20 +45,21 @@ if(!$_SESSION["login"]) {
 <main>
     <div class="container">
         <div class="item-list__wrap">
-        <!-- <div class="about-user">
-            <p class="about-user__item">現在ログイン中のユーザー : <?php echo h($id); ?></p>
-        </div> -->
         <h2>商品一覧</h2>
             <ul class="item-list">
                 <?php for($i = 0; $i < count($items); $i++) : ?>
                 <li class="item-detail js-item-detail">
-                    <div class="trimming"><img src="../items/images/<?php echo h($items[$i]["item_thumbnail"]); ?>" alt="商品画像" class="item-detail__image"></div>
-                    <!-- <p class="item-detail__id">商品ID : <?php echo h($items[$i]["item_id"]); ?></p> -->
-                    <p class="item-detail__name">商品名 : <?php echo h($items[$i]["item_name"]); ?></p>
+                    <a href="../items/item_detail.php?code=<?php echo h($items[$i]["item_id"]); ?>" class="trimimg_wrap_link">
+                        <div class="trimming">
+                            <img src="../items/images/<?php echo $item_thumbnail[$i]; ?>" alt="商品画像" class="item-detail__image <?php echo h($no_image); ?>">
+                        </div>
+                    </a>
+                    <p class="item-detail__name">
+                    <a href="../items/item_detail.php?code=<?php echo h($items[$i]["item_id"]); ?>">商品名 : <?php echo h($items[$i]["item_name"]); ?></a></p>
                     <p class="item-detail__description">商品説明文 : <?php echo h($items[$i]["item_description"]); ?></p>
                     <p class="item-detail__price">価格 : <span class="item-detail__price__number font-weight-bold"><?php echo h($items[$i]["item_price"]); ?></span>円（税別）</p>
                     <p class="item-detail__stock">在庫数 : <?php echo h($items[$i]["item_stock"]); ?></p>
-                    <a href="../items/item_detail.php?code=<?php echo h($items[$i]["item_id"]); ?>">詳細を見る</a>
+                    <a href="../items/item_detail.php?code=<?php echo h($items[$i]["item_id"]); ?>" class="item_list__item_link">詳細を見る</a>
                 </li>
                 <?php endfor; ?>
             </ul>
@@ -60,6 +72,12 @@ if(!$_SESSION["login"]) {
     <script src="../assets/js/jquery.pagination.js"></script>
     <script src="../assets/js/index.js"></script>
     <script>
+    // 商品登録に成功した場合のアラート
+    const params = (new URL(document.location)).searchParams;
+    const registerParams = params.get('item');
+    if(registerParams === 'success') {
+        alert('商品登録に成功しました。');
+    }
         // jQuery
         $(function(){
             $('.js-item-detail').matchHeight();
