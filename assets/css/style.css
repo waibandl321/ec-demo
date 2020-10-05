@@ -40,6 +40,13 @@ header {
     /* width: 35px; */
     transition: .3s;
 }
+.header-top__menu-icon a {
+    color: #fff;
+}
+.header-top__menu-icon a:hover {
+    opacity: .7;
+    color: #fff;
+}
 .header-top__menu-icon i {
     font-size: 35px;
     box-sizing: border-box;
