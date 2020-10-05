@@ -89,7 +89,7 @@ if(!$_SESSION["login"]) {
     const signOutBtn = document.getElementById('signOutBtn');
     signOutBtn.addEventListener('click', () => {
         alert('本当に退会しますか？？');
-    })
+    });
     // jQuery
     $(function(){
         $('.js-registered-item').matchHeight();

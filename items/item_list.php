@@ -72,12 +72,14 @@ for($i = 0; $i < count($items); $i++) {
     <script src="../assets/js/jquery.pagination.js"></script>
     <script src="../assets/js/index.js"></script>
     <script>
+
     // 商品登録に成功した場合のアラート
     const params = (new URL(document.location)).searchParams;
     const registerParams = params.get('item');
     if(registerParams === 'success') {
         alert('商品登録に成功しました。');
     }
+
         // jQuery
         $(function(){
             $('.js-item-detail').matchHeight();

@@ -107,6 +107,31 @@ if(isset($_GET['code'])) {
     $stmt->execute($data);
     $post_data = $stmt->fetchAll();
 }
+
+// 商品にレビューが投稿された際の処理
+$post_content = $_POST["post_content"];
+$post_name = "名無さん";
+$post_item_id = $_POST["post_item_id"];
+//投稿データのinsert処理
+if(isset($_POST["post_submit"])) {
+    $stmt = $dbh->prepare("INSERT INTO posts(item_id, post_name, post_content) VALUES (?, ?, ?)");
+    $post_data = [];
+    $post_data[] = $post_item_id;
+    $post_data[] = $post_name;
+    $post_data[] = $post_content;
+    $stmt->execute($post_data);
+    header('Location: ../items/item_detail.php?code=' . $post_item_id);
+} 
+
+// 商品レビューの取得
+if(isset($_GET['code'])) {
+    $sql = "SELECT * FROM posts WHERE item_id = ?";
+    $stmt = $dbh->prepare($sql);
+    $data = [];
+    $data[] = $code;
+    $stmt->execute($data);
+    $post_data = $stmt->fetchAll();
+}
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -126,6 +151,8 @@ if(isset($_GET['code'])) {
             <?php if(isset($cart_quantity)) : ?>
             <p>こちらの商品はお客様のカートに<?php echo h($cart_quantity); ?>個入っています。</p>
             <?php endif; ?>
+            <p class="text-primary font-weight-bold"><?php echo h($message); ?></p>
+            <p class="text-primary font-weight-bold"><?php echo h($same_item_message); ?></p>
             <?php foreach((array)$item_info as $item) : ?>
                 <div class="item-detail__wrap">
                     <div class="item-detail__images">
@@ -279,6 +306,7 @@ if(isset($_GET['code'])) {
                 zoomImage.style.width = (image.offsetWidth * scale) + 'px';
                 // 同時に高さも指定
                 zoomImage.style.height = (image.offsetWidth * scale) + 'px';
+
             });
             // マウスが離れた時にzoomエリアを非表示にする
             container.addEventListener('mouseleave', () => {

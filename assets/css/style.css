@@ -3,11 +3,15 @@ body {
     font-family: "メイリオ", sans-serif;
     background-color: #eef1f3;
 }
+a {
+    color: #2C88CB;
+}
 a:hover {
-    text-decoration: none;
     opacity: .7;
     transition: .3s;
-    color: inherit;
+}
+a:link, a:visited, a:hover, a:active {
+    text-decoration: none!important;
 }
 .clearfix::after {
     display: block;
@@ -53,6 +57,14 @@ header {
     padding: 5px;
     border: 1px solid #fff;
 }
+.header-top__menu-icon a {
+    color: #fff;
+}
+.header-top__menu-icon a:hover {
+    opacity: .8;
+    text-decoration: none;
+    color: #fff;
+}
 .header-top__menu-icon:hover {
     opacity: .7;
     transition: .3s;
@@ -71,6 +83,10 @@ header {
     display: flex;
     align-items: center;
 }
+.header-top__cart-link {
+    display: flex;
+    align-items: center;
+}
 .header-top__link + .header-top__link {
     margin-left: 30px;
 }
@@ -79,6 +95,9 @@ header {
     margin-bottom: 0;
 }
 .header-top__item_list a {
+    color: #fff;
+}
+.header-top__item_list a:hover {
     color: #fff;
 }
 .header-top__account-information a {

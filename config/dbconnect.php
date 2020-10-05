@@ -1,9 +1,9 @@
 <?php 
-define('DB_HOST', '127.0.0.1');
-define('DB_NAME', 'ec-dmeo');
-define('DB_USER', 'sample_user');
-define('DB_PASSWORD', 'password');
-define('DB_PORT', '8889');
+define('DB_HOST', 'mysql8031.xserver.jp');
+define('DB_NAME', 'waibandl321_ec');
+define('DB_USER', 'waibandl321_jum');
+define('DB_PASSWORD', 'Skyj0725');
+define('DB_PORT', '3306');
 
 // 文字化け対策
 $options = array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET CHARACTER SET 'utf8'");

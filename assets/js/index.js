@@ -4,11 +4,14 @@
 /*========================================
 ヘッダーとフッターの高さを取得して、メインコンテンツの上部の余白を指定する
 ========================================*/
-// let header = document.querySelector('header');
-// let headerHeight = header.clientHeight + 50;
+let header = document.querySelector('header');
+let footer = document.querySelector('.footer');
+let headerHeight = header.clientHeight + 50;
+let footerHeight = footer.clientHeight + 50;
 
-// let jsContainer = document.querySelector('.container');
-// jsContainer.style.marginTop = headerHeight + "px";
+let jsContainer = document.querySelector('.container');
+jsContainer.style.marginTop = headerHeight + "px";
+jsContainer.style.paddingBottom = footerHeight + "px";
 
 /*========================================
 ドラッグアンドドロップイベントの処理
