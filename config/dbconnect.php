@@ -2,7 +2,7 @@
 define('DB_HOST', 'mysql8031.xserver.jp');
 define('DB_NAME', 'waibandl321_ec');
 define('DB_USER', 'waibandl321_jum');
-define('DB_PASSWORD', 'Skyj0725');
+define('DB_PASSWORD', '');
 define('DB_PORT', '3306');
 
 // 文字化け対策
