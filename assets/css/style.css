@@ -21,10 +21,12 @@ a:link, a:visited, a:hover, a:active {
 textarea {
     resize: none;
 }
-
+.container {
+    padding: 50px 0;
+}
 /* ヘッダー */
 header {
-    position: fixed;
+    position: sticky;
     top: 0;
     left: 0;
     right: 0;
@@ -41,6 +43,13 @@ header {
 .header-top__menu-icon {
     /* width: 35px; */
     transition: .3s;
+}
+.header-top__menu-icon a {
+    color: #fff;
+}
+.header-top__menu-icon a:hover {
+    opacity: .7;
+    color: #fff;
 }
 .header-top__menu-icon i {
     font-size: 35px;
@@ -223,6 +232,9 @@ footer {
     position: relative;
     width: 100%;
 }
+.item-detail .trimming a {
+    display: block;
+}
 .item-detail .trimming::before {
     content: "";
     display: block;
@@ -250,7 +262,7 @@ footer {
     height: 40px;
     line-height: 40px;
 }
-.about-user__item a {
+.about-user__item .item_list__item_link {
     display: block;
     background: #2C88CB;
     color: #fff;
@@ -316,7 +328,6 @@ footer {
     top: 50%;
     left: 50%;
     transform: translateY(-50%) translateX(-20%);
-    
 }
 @media(max-width: 1050px) {
     .item-detail {
@@ -343,6 +354,11 @@ footer {
 }
 
 /* 商品登録　編集画面 */
+
+/* ユーザー登録　*/
+.required_msg {
+    margin-left: 10px;
+}
 /* ドラッグアンドドロップ部分のスタイル */
 .form-control-file {
     color: blue;
@@ -412,7 +428,7 @@ input[type="file"]::-webkit-file-upload-button {
 .item-detail__wrap {
       display: flex;
       flex-wrap: wrap;
-      margin: 30px -50px 0;
+      margin: 20px -20px 0;
       padding-bottom: 50px;
       position: relative;
 }
@@ -420,7 +436,7 @@ input[type="file"]::-webkit-file-upload-button {
 .item-detail__block {
     width: 50%;
     box-sizing: border-box;
-    padding: 0 50px;
+    padding: 0 20px;
 }
 .item-detail__block p span {
     font-weight: bold;
@@ -507,7 +523,10 @@ input[type="file"]::-webkit-file-upload-button {
 .to__cart-page + .back-to__item-list {
     margin-left: 20px;
 }
-.item-detail a {
+.trimimg_wrap_link {
+    display: block;
+}
+.item-detail .item_list__item_link {
     background: #2C88CB;
     color: #fff;
     padding: 10px 0;
@@ -701,7 +720,7 @@ input[type="file"]::-webkit-file-upload-button {
 }
 .cart-item {
     display: flex;
-    padding: 20px;
+    padding: 20px 0;
     flex-wrap: wrap;
     align-items: flex-start;
     box-sizing: border-box;
@@ -711,15 +730,15 @@ input[type="file"]::-webkit-file-upload-button {
     margin-top: 40px;
 }
 .cart-item__image {
-    width: 20%;
+    width: 40%;
     box-sizing: border-box;
 }
 .cart-item__image img {
     width: 100%;
 }
 .cart-item__infomation {
-    width: 80%;
-    padding-left: 40px;
+    width: 60%;
+    padding-left: 20px;
     box-sizing: border-box;
 }
 .cart-item__infomation p a {
@@ -757,6 +776,13 @@ input[type="file"]::-webkit-file-upload-button {
 }
 .to__register-page:hover {
     color: #fff;
+}
+.cart_delete_button {
+    outline: none;
+    border: none;
+    background-color: #db2d25;
+    color: #fff;
+    padding: 5px 10px;
 }
 /* マイページ */
 .user-information__wrap {

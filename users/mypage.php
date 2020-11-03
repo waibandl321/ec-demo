@@ -52,7 +52,7 @@ if(!$_SESSION["login"]) {
                     <li>メールアドレス : <?php echo h($user["email"]); ?></li>
                     <li>登録住所 : <?php echo h($user["address"]); ?></li>
                     <li><a href="../items/index.php" class="registered-item__link">商品登録する</a></li>
-                    <li><a href="../users/signout.php?user_id=<?php echo h($id); ?>" class="signout_link btn btn-block btn-large">退会する</a></li>
+                    <li id="signOutBtn"><a href="../users/signout.php?user_id=<?php echo h($id); ?>" class="signout_link btn btn-block btn-large">退会する</a></li>
                 </ul>
             </div>
             
@@ -85,6 +85,11 @@ if(!$_SESSION["login"]) {
 <!-- <script src="../assets/js/drift/Drift.min.js"></script> -->
 <script src="../assets/js/index.js"></script>
 <script>
+    // 退会ボタンを押した時のアラート表示
+    const signOutBtn = document.getElementById('signOutBtn');
+    signOutBtn.addEventListener('click', () => {
+        alert('本当に退会しますか？？');
+    });
     // jQuery
     $(function(){
         $('.js-registered-item').matchHeight();

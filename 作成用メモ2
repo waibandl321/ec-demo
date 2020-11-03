@@ -1,0 +1,82 @@
+調整項目
+
+PHP
+・登録成功したらログイン画面に遷移
+=>登録に成功したら、アラートの後にページ遷移させる
+users/index.php
+
+・商品登録が成功したときに商品詳細ページなんかに飛ばす(ユーザー登録の成功時と同じ処理)
+items/index.php
+items/item_list.php
+
+・画像が登録されていないときはno imageとかを入れる
+users/index.php (画像がない場合はno_image.pngをinsertする)
+items/item_list.php (データベースから取得したデータの画像が空の場合はno_image.pngを表示させる)
+
+・カートが空の場合の処理（エラーが出てる？）
+=> カートページでユーザーに紐づく商品データを取得した際に、配列が空の場合は　メッセージを表示
+cart.php
+
+
+・商品詳細ページの同じアイテムがカートに存在していますの表示修正(非表示に)
+items/item_detail.php
+・商品詳細ページでカートに商品が存在する場合に、その数量を表示してあげる
+items/item_detail.php
+
+・退会したユーザーが出品している商品は表示させないようにする
+items/item_list.php
+
+・カート内で商品毎に削除ができるようにする
+items/item_detail.php(L47)
+
+・商品編集画面で画像の更新をできるように
+items/index.php(L61~)
+
+
+・カート内で商品毎に数量の変更
+・同じメールアドレスが登録できてしまうため、登録画面でメールアドレスのチェックを行う
+・パラメーターに存在しない値がセットされた時に、404ページを表示
+items/item_detail.php
+
+・formのrequiredなしでバリデーション実装(PHPで処理)
+※jsでバリデーションを実行した場合、ソースコードの書き換えが発生したりjsがオフになっていた場合使えないため、
+サーバーサイドでバリデーションを行うことが大切
+■ 処理
+1. 必須項目のチェック
+2. メールアドレス形式のチェック
+■ 編集ファイル
+users/index.php
+users/login.php
+items/index.php
+
+
+
+フロントエンド
+・入力の必須項目わかるようにする
+users/index.php
+users/login.php
+items/index.php
+
+・position: stickyを使ってヘッダーフッターの表示調整
+css/style.css
+
+・カート内のitemのリンクの範囲を調整(他のサイトを参考に)
+=>画像と商品名にリンク(Amazon参考)
+users/cart.php
+items/item_list.php(商品一覧も同様に)
+css/style.css
+
+・退会ボタンを押した時はalertを表示させる
+users/mypage.php
+
+・パスワード再発行処理画面のメッセージ表示
+メールが無事に送信されたかわからない
+=>メース送信に成功したらアラートを表示して3秒後に商品一覧ページに遷移
+=>メールアドレスが間違っている場合にもアラートを出してログイン画面に遷移
+users/password_reissue.php
+
+パスワードの再設定が完了したらメッセージを出して数秒後にページ遷移させる
+=>アラートを出してログイン画面に遷移
+users/password_reissue.php
+
+

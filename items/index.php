@@ -27,8 +27,6 @@ $_SESSION["item_price"] = $item_price;
 $_SESSION["item_description"] = $item_description;
 $_SESSION["item_stock"] = $item_stock;
 
-// 画像の取得
-$item_thumbnail = $_FILES['item_thumbnail']['name'];
 
 $item_id = $_GET['code'];
 //パラメーターに値が存在する場合は更新処理
@@ -49,16 +47,38 @@ $edit_description = $_POST["edit_description"];
 $edit_stock = $_POST["edit_stock"];
 
 
+//画像の登録処理
+if(!empty($_FILES['item_thumbnail']['name'])) {
+    $edit_item_thumbnail = $_FILES['edit_item_thumbnail']['name'];
+    $item_thumbnail = $_FILES['item_thumbnail']['name'];
+    $upload_dir = '../items/images/';
+    $uploaded_file = $upload_dir . basename($_FILES['item_thumbnail']['name']);
+    move_uploaded_file($_FILES['item_thumbnail']['tmp_name'], $uploaded_file);
+} else {
+    $item_thumbnail = "no_image.png";
+};
+
+//更新画像の登録処理
+if(!empty($_FILES['edit_item_thumbnail']['name'])) {
+    $edit_item_thumbnail = $_FILES['edit_item_thumbnail']['name'];
+    $upload_dir = '../items/images/';
+    $uploaded_file = $upload_dir . basename($_FILES['edit_item_thumbnail']['name']);
+    move_uploaded_file($_FILES['edit_item_thumbnail']['tmp_name'], $uploaded_file);
+} else {
+    $edit_item_thumbnail = "no_image.png";
+};
+
 //もし商品情報がすでに存在する場合にはupdate処理
 if(isset($_GET['code'])) {
     //更新ボタンが押されたときの処理
     if(isset($_POST["edit"])) {
-        $sql = "UPDATE items SET item_name = ?, item_price = ?, item_description = ?, item_stock = ? WHERE item_id = ?";
+        $sql = "UPDATE items SET item_name = ?, item_price = ?, item_description = ?, item_stock = ?, item_thumbnail = ? WHERE item_id = ?";
         $data = [];
         $data[] = $edit_name;
         $data[] = $edit_price;
         $data[] = $edit_description;
         $data[] = $edit_stock;
+        $data[] = $edit_item_thumbnail;
         $data[] = $item_id;
         $stmt = $dbh->prepare($sql);
         $stmt->execute($data);
@@ -78,19 +98,17 @@ if(isset($_GET['code'])) {
         $data[] = $item_thumbnail;
         $_SESSION["data"] = $data;
         $stmt->execute($data);
-        $message = "商品情報の登録に成功しました！";
-        // header('Location: ../items/index.php');
+        echo "
+        <script>
+            alert('商品登録に成功しました');
+            window.location.href = '../items/item_list.php';
+        </script>";
     } else {
         $message = "商品を登録してください！";
     }
 }
 
-//画像の登録処理
-if(!empty($_FILES['item_thumbnail']['name'])) {
- $upload_dir = '../items/images/';
- $uploaded_file = $upload_dir . basename($_FILES['item_thumbnail']['name']);
- move_uploaded_file($_FILES['item_thumbnail']['tmp_name'], $uploaded_file);
-};
+
 
 
 
@@ -120,20 +138,20 @@ if(!empty($_FILES['item_thumbnail']['name'])) {
             <?php if(!isset($_GET["code"])) : ?>
             <form method="POST" action="" enctype="multipart/form-data">
                 <div class="form-group">
-                    <label for="item-name">商品名</label>
+                    <label for="item-name">商品名<span class="text-danger">(必須)</span></label>
                     <input type="text" name="item_name" class="form-control" id="itemName" placeholder="商品名を入力してください" required>
                 </div>
                 <div class="form-group">
-                    <label for="item-price">商品価格</label>
+                    <label for="item-price">商品価格<span class="text-danger">(必須)</span></label>
                     <input type="number" name="item_price" class="form-control" id="itemPrice" placeholder="商品価格を入力してください" required>
                 </div>
                 <div class="form-group">
-                    <label for="item-description">商品説明文</label>
+                    <label for="item-description">商品説明文<span class="text-danger">(必須)</span></label>
                     <textarea class="form-control" name="item_description" id="itemDescription" placeholder="商品説明文を入力してください" required></textarea>
                 </div>
                 <div class="form-group">
-                    <label for="item-stock">在庫数</label>
-                    <input type="number" name="item_stock" class="form-control" id="itemStock" placeholder="在庫数を入力してください" required>
+                    <label for="item-stock">在庫数<span class="text-danger">(必須)</span></label>
+                    <input type="number" name="item_stock" class="form-control" id="itemStock" placeholder="在庫数を入力してください">
                 </div>
                 <div class="form-group">
                     <label for="item-thumbnail"">商品画像1(ファイルを選択 or ドラッグ&ドロップ)</label>
@@ -159,6 +177,10 @@ if(!empty($_FILES['item_thumbnail']['name'])) {
                     <div class="form-group">
                         <label for="item-stock">在庫数</label>
                         <input type="number" name="edit_stock" class="form-control" id="itemStock" value="<?php echo h($edit_item["item_stock"]); ?>" placeholder="在庫数を入力してください" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="item-thumbnail"">商品画像(ファイルを選択 or ドラッグ&ドロップ)</label>
+                        <input type="file" name="edit_item_thumbnail" class="form-control form-control-file">
                     </div>
                     <input type="submit" class="btn btn-large btn-block uploaded_btn" name="edit" value="更新する">
                 </form>

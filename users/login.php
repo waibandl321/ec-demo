@@ -75,12 +75,12 @@ $errors = [];
         <div class="login">
             <form action="" method="POST">
             <div class="form-group">
-                    <label for="email">メールアドレス</label>
+                    <label for="email">メールアドレス<span class="text-danger">(必須)</span></label>
                     <input type="email" name="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="メールアドレス" required>
                     <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
                 </div>
                 <div class="form-group">
-                    <label for="password">パスワード</label>
+                    <label for="password">パスワード<span class="text-danger">(必須)</span></label>
                     <input type="password" name="password" class="form-control" id="password" placeholder="パスワード" required>
                 </div>
                 <button type="submit" name="login" id="loginBtn" class="btn btn-lg btn-block mt-4">ログインする</button>
@@ -101,5 +101,13 @@ $errors = [];
     </main>
     <?php include("../component/footer.php"); ?>
     <script src="../assets/js/index.js"></script>
+    <script>
+    // ユーザー登録に成功した場合のアラート
+    const params = (new URL(document.location)).searchParams;
+    const registerParams = params.get('register');
+    if(registerParams === 'success') {
+        alert('ユーザー登録に成功しました。ログイン情報を入力してログインしてください。');
+    }
+    </script>
 </body>
 </html>
