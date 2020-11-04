@@ -21,3 +21,5 @@ items : 商品登録(index),商品一覧(item_list),商品詳細ページ(item_d
 users : 会員登録(index), ログイン(login), ログアウト(logout), サインイン(signin), パスワード再発行(password_reissue), マイページ(mypage), カート機能(cart)  
 index.php : トップページ  
  
+
+![image](https://user-images.githubusercontent.com/60844799/98106648-d9c2e900-1edc-11eb-95e8-c4f9680f394d.png)  
