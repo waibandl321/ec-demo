@@ -25,3 +25,4 @@ index.php : トップページ
 ![image](https://user-images.githubusercontent.com/60844799/98106648-d9c2e900-1edc-11eb-95e8-c4f9680f394d.png)  
 
 ## ユーザーの使用ケースを想定
+![image](https://user-images.githubusercontent.com/60844799/98106922-21e20b80-1edd-11eb-9ae5-c7643050bb29.png)  
